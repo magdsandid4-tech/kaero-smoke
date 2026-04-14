@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAERO SMOKE — Activated Coconut Carbon Filters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,800;1,9..144,300;1,9..144,700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0B2558;--navy2:#1a3d8f;
+  --blue:#2678D4;--lblue:#5BB8F5;--sky:#C4E4FF;
+  --pink:#FF2B7A;--pink-bg:#FFF0F6;--pink-mid:#FFB3D0;
+  --green:#1CB94A;--green-bg:#E8FBF0;--green-mid:#7AE89A;
+  --white:#fff;--off:#F5F7FA;--muted:#4E6FA0;
+}
+html{overflow-x:hidden}
+body{background:var(--white);color:var(--navy);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
+#prog{position:fixed;top:0;left:0;right:0;z-index:1001;height:3px;width:0;background:linear-gradient(90deg,var(--navy),var(--blue),var(--lblue))}
+
+/* ── NAV ── */
+#nav{position:fixed;top:0;left:0;right:0;z-index:900;padding:.55rem 4vw;display:flex;align-items:center;justify-content:space-between;transition:box-shadow .4s;background:rgba(255,255,255,.97);backdrop-filter:blur(22px);opacity:0}
+#nav.solid{box-shadow:0 1px 0 rgba(11,37,88,.09)}
+.nlogo img{height:clamp(72px,9vw,108px);width:auto;object-fit:contain;transition:transform .35s;filter:drop-shadow(0 2px 12px rgba(11,37,88,.15))}
+.nlogo:hover img{transform:scale(1.05) rotate(-1.5deg)}
+.nlinks{display:flex;gap:2rem;list-style:none;align-items:center}
+.nlinks a{font-size:.74rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);text-decoration:none;transition:color .2s}
+.nlinks a:hover{color:var(--blue)}
+.nbtn{background:var(--navy)!important;color:#fff!important;padding:.55rem 1.4rem;border-radius:100px}
+#cart-nav-btn{display:flex;align-items:center;gap:.5rem;background:none;border:1.5px solid rgba(11,37,88,.15);color:var(--navy);padding:.5rem 1.1rem;border-radius:100px;font-size:.74rem;font-weight:600;cursor:pointer;transition:all .22s}
+#cart-nav-btn:hover{border-color:var(--navy);background:var(--navy);color:#fff}
+#cart-count{display:none;align-items:center;justify-content:center;width:18px;height:18px;background:var(--pink);color:#fff;border-radius:50%;font-size:.6rem;font-weight:700}
+@media(max-width:720px){.nlinks{display:none}}
+
+/* ── CART DRAWER ── */
+#cart-overlay{position:fixed;inset:0;background:rgba(11,37,88,.35);backdrop-filter:blur(4px);z-index:1100;opacity:0;pointer-events:none;transition:opacity .35s}
+#cart-overlay.active{opacity:1;pointer-events:all}
+#cart-drawer{position:fixed;top:0;right:0;height:100%;width:min(440px,100vw);background:#fff;z-index:1101;transform:translateX(100%);transition:transform .38s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:-12px 0 50px rgba(11,37,88,.15)}
+#cart-drawer.open{transform:translateX(0)}
+#cart-header{padding:1.4rem 1.5rem;border-bottom:1px solid rgba(11,37,88,.07);display:flex;align-items:center;justify-content:space-between}
+#cart-header h3{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;color:var(--navy)}
+#cart-close{background:none;border:none;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--muted);transition:all .2s;display:flex;align-items:center;justify-content:center}
+#cart-close:hover{background:var(--off);color:var(--navy)}
+#cart-items-wrap{flex:1;overflow-y:auto;padding:1rem 1.5rem}
+#cart-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:1rem;color:var(--muted)}
+#cart-empty .ce-icon{font-size:3rem;opacity:.3}
+.cart-item{display:flex;gap:1rem;align-items:center;padding:1rem 0;border-bottom:1px solid rgba(11,37,88,.05)}
+.ci-img{width:56px;height:56px;border-radius:14px;flex-shrink:0}
+.ci-img.blue{background:linear-gradient(135deg,var(--sky),var(--blue))}
+.ci-img.pink{background:linear-gradient(135deg,var(--pink-mid),var(--pink))}
+.ci-img.green{background:linear-gradient(135deg,var(--green-mid),var(--green))}
+.ci-info{flex:1}.ci-name{font-weight:700;font-size:.88rem;color:var(--navy)}
+.ci-sub{font-size:.73rem;color:var(--muted);margin-top:.1rem}
+.ci-price{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--navy);margin-top:.3rem}
+.ci-qty{display:flex;align-items:center;gap:.5rem}
+.ci-qty button{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(11,37,88,.15);background:none;cursor:pointer;font-size:.95rem;font-weight:600;color:var(--navy);transition:all .2s;display:flex;align-items:center;justify-content:center}
+.ci-qty button:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.ci-qty span{font-weight:700;font-size:.88rem;min-width:20px;text-align:center}
+.ci-rm{background:none;border:none;cursor:pointer;color:var(--muted);padding:.25rem;transition:color .2s;flex-shrink:0}
+.ci-rm:hover{color:var(--navy)}
+#cart-footer{padding:1.2rem 1.5rem;border-top:1px solid rgba(11,37,88,.07);display:none}
+#cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+#cart-total-row span:first-child{font-size:.8rem;font-weight:500;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+#cart-total{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:700;color:var(--navy)}
+#cart-checkout{display:block;width:100%;padding:1rem;background:var(--navy);color:#fff;border:none;border-radius:100px;font-size:.85rem;font-weight:700;letter-spacing:.06em;cursor:pointer;text-decoration:none;text-align:center;transition:background .22s;margin-bottom:.7rem}
+#cart-checkout:hover{background:var(--navy2)}
+#cart-continue{display:block;width:100%;padding:.75rem;background:none;border:1.5px solid rgba(11,37,88,.15);color:var(--navy);border-radius:100px;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .22s}
+#cart-continue:hover{border-color:var(--navy);background:var(--off)}
+
+/* ── KAERO WIND CLOUD ── */
+.kcloud{position:absolute;pointer-events:none;will-change:transform}
+.kcloud svg{width:100%;height:100%}
+/* scroll-cloud SVG decoration */
+.kcloud img{width:100%;height:100%;object-fit:contain}
+/* light sections: navy tint */
+#hero .kcloud img,#split .kcloud img,#filters-showcase .kcloud img,#shop .kcloud img,#cta .kcloud img,#sc-feat .kcloud img,#sc-fstage .kcloud img{filter:invert(13%) sepia(80%) saturate(800%) hue-rotate(200deg) brightness(0.9) opacity(0.9)}
+/* color sections */
+#sc-blue .kcloud img{filter:invert(20%) sepia(90%) saturate(600%) hue-rotate(195deg) brightness(0.85) opacity(0.9)}
+#sc-pink .kcloud img{filter:invert(15%) sepia(90%) saturate(800%) hue-rotate(310deg) brightness(0.75) opacity(0.9)}
+#sc-green .kcloud img{filter:invert(20%) sepia(80%) saturate(700%) hue-rotate(100deg) brightness(0.7) opacity(0.9)}
+/* dark sections: white */
+#sc-intro .kcloud img,#sc-combo .kcloud img,#sc-mani .kcloud img{filter:brightness(0) invert(1) opacity(0.85)}
+
+/* ── §0 INTRO ── */
+#po-intro{position:relative;z-index:10}
+#sc-intro{width:100%;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#060B1E;position:relative;overflow:hidden}
+#intro-logo{width:clamp(300px,46vw,680px);will-change:transform,opacity,filter;transform:translateZ(0);pointer-events:none}
+#intro-tag{font-size:.58rem;letter-spacing:.48em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-top:2.2rem;font-weight:500;opacity:0}
+#intro-scroll{position:absolute;bottom:2.8rem;font-size:.54rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.2);display:flex;flex-direction:column;align-items:center;gap:.7rem;opacity:0}
+.imouse{width:20px;height:32px;border:1.5px solid rgba(255,255,255,.2);border-radius:10px;display:flex;justify-content:center;padding-top:5px}
+.idot{width:2.5px;height:7px;background:rgba(255,255,255,.4);border-radius:3px;animation:mdrop 2s ease-in-out infinite}
+@keyframes mdrop{0%{transform:translateY(0);opacity:1}60%{transform:translateY(9px);opacity:0}100%{transform:translateY(0);opacity:0}}
+
+/* ── §1 HERO ── */
+#hero{min-height:100vh;background:#fff;display:flex;align-items:center;padding:0 6vw;position:relative;overflow:hidden;z-index:1}
+#hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:center;width:100%;max-width:1300px;margin:0 auto;position:relative;z-index:3}
+.eyebrow{display:inline-flex;align-items:center;gap:.55rem;font-size:.66rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--blue);background:rgba(38,120,212,.07);border:1px solid rgba(38,120,212,.18);padding:.42rem 1.1rem;border-radius:100px;margin-bottom:1.7rem;opacity:0;transform:translateY(14px)}
+#hero h1{font-family:'Fraunces',serif;font-weight:800;font-size:clamp(3rem,6.5vw,6.5rem);line-height:.96;letter-spacing:-.025em;color:var(--navy);margin-bottom:1.4rem}
+.ww{display:inline-block;overflow:hidden;vertical-align:bottom;margin-right:.15em}
+.wi{display:inline-block;transform:translateY(115%)}
+.ac{color:var(--blue);font-style:italic}
+.hero-sub{font-size:clamp(.9rem,1.3vw,1.06rem);line-height:1.78;color:var(--muted);max-width:430px;margin-bottom:2.5rem;opacity:0;transform:translateY(22px)}
+.hbtns{display:flex;gap:1rem;align-items:center;opacity:0;transform:translateY(18px)}
+.bs{background:var(--navy);color:#fff;padding:.95rem 2.2rem;border-radius:100px;font-weight:600;font-size:.84rem;letter-spacing:.04em;text-decoration:none;box-shadow:0 12px 38px rgba(11,37,88,.22);transition:all .25s;display:inline-block}
+.bs:hover{background:var(--navy2);transform:translateY(-2px)}
+.bt{color:var(--navy);font-weight:600;font-size:.84rem;text-decoration:none;display:flex;align-items:center;gap:.4rem;transition:gap .22s}
+.bt:hover{gap:.75rem}.bt::after{content:'→'}
+#hero-right{position:relative;display:flex;justify-content:center;align-items:center}
+#hprod{width:clamp(260px,44vw,560px);filter:drop-shadow(0 40px 80px rgba(0,0,0,.38));opacity:0;transform:translateY(60px) scale(.88) rotate(4deg);transform-origin:center bottom}
+.hpill{position:absolute;background:rgba(255,255,255,.93);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.9);border-radius:50px;padding:.62rem 1.1rem;box-shadow:0 10px 32px rgba(11,37,88,.12);font-weight:600;font-size:.74rem;color:var(--navy);display:flex;align-items:center;gap:.45rem;opacity:0;white-space:nowrap}
+.hint-wrap{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;font-size:.58rem;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);opacity:0}
+.mouse{width:22px;height:36px;border:2px solid rgba(38,120,212,.35);border-radius:11px;display:flex;justify-content:center;padding-top:6px}
+.mdot{width:3px;height:8px;background:var(--blue);border-radius:3px;animation:mdrop 1.8s ease-in-out infinite}
+
+/* ── COLOR SECTIONS ── */
+.pin-outer{position:relative}
+.pin-scene{width:100%;height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+#sc-blue{background:linear-gradient(150deg,#D6EEFF 0%,#A8D8FF 100%)}
+#sc-pink{background:linear-gradient(150deg,#FFE0EC 0%,#FFB3CE 100%)}
+#sc-green{background:linear-gradient(150deg,#CCFADC 0%,#88EBA8 100%)}
+.color-inner{display:grid;grid-template-columns:1fr 1fr;gap:8vw;align-items:center;width:100%;max-width:1300px;padding:0 7vw}
+.sec-tag{font-size:.64rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;margin-bottom:.9rem;opacity:0;transform:translateY(14px)}
+.tag-blue{color:var(--blue)}.tag-pink{color:#D0005E}.tag-green{color:#0A8A2E}
+.sec-h{font-family:'Fraunces',serif;font-weight:800;font-size:clamp(2.2rem,5vw,5rem);line-height:.98;letter-spacing:-.025em;opacity:0;transform:translateY(32px)}
+.h-blue{color:var(--navy)}.h-pink{color:#9e0048}.h-green{color:#07612a}
+.sec-p{font-size:1rem;line-height:1.78;margin-top:1.2rem;max-width:400px;opacity:0;transform:translateY(20px)}
+.p-blue{color:var(--muted)}.p-pink{color:#8c1a4a}.p-green{color:#1a5c2e}
+.color-chips{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:2rem}
+.chip{display:flex;align-items:center;gap:.5rem;padding:.45rem 1rem;border-radius:100px;font-weight:600;font-size:.78rem;opacity:0;transform:translateY(16px)}
+.chip-blue{background:rgba(38,120,212,.14);color:var(--navy)}
+.chip-pink{background:rgba(255,43,122,.14);color:#9e0048}
+.chip-green{background:rgba(28,185,74,.16);color:#07612a}
+.chip-dot{width:8px;height:8px;border-radius:50%}
+.color-img-wrap{position:relative;display:flex;justify-content:center;align-items:center}
+.color-prod{width:clamp(240px,34vw,440px);filter:drop-shadow(0 35px 75px rgba(11,37,88,.2));opacity:0;transform:translateX(80px) rotate(6deg) scale(.9)}
+.color-prod.pink-shadow{filter:drop-shadow(0 35px 75px rgba(255,43,122,.3))}
+.color-prod.green-shadow{filter:drop-shadow(0 35px 75px rgba(28,185,74,.3))}
+.big-num{position:absolute;font-family:'Fraunces',serif;font-weight:800;font-size:clamp(160px,22vw,280px);line-height:1;letter-spacing:-.04em;opacity:0;z-index:0;user-select:none;pointer-events:none}
+.bn-blue{color:rgba(38,120,212,.09);top:50%;left:3%;transform:translateY(-50%)}
+.bn-pink{color:rgba(255,43,122,.12);top:50%;left:3%;transform:translateY(-50%)}
+.bn-green{color:rgba(28,185,74,.12);top:50%;left:3%;transform:translateY(-50%)}
+
+/* ── §5 COMBO DARK ── */
+#sc-combo{background:var(--navy);background-image:radial-gradient(ellipse at 75% 25%,rgba(38,120,212,.32) 0%,transparent 55%),radial-gradient(ellipse at 15% 80%,rgba(135,206,235,.14) 0%,transparent 50%)}
+.dk-tag{font-size:.64rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:var(--lblue);margin-bottom:.9rem;opacity:0;transform:translateY(14px)}
+.dk-h{font-family:'Fraunces',serif;font-weight:800;font-size:clamp(2rem,5vw,5rem);color:#fff;line-height:.98;letter-spacing:-.025em;opacity:0;transform:translateY(32px)}
+.dk-p{font-size:1rem;color:rgba(255,255,255,.5);line-height:1.78;margin-top:1.2rem;max-width:400px;opacity:0;transform:translateY(20px)}
+.flist{list-style:none;display:flex;flex-direction:column;gap:1rem;margin-top:2rem}
+.flist li{display:flex;align-items:flex-start;gap:1rem;font-size:.9rem;color:rgba(255,255,255,.6);line-height:1.5;opacity:0;transform:translateX(-24px)}
+.fic{flex-shrink:0;width:32px;height:32px;background:rgba(135,206,235,.12);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+#combo-img-wrap{position:relative;display:flex;justify-content:center}
+#combo-img{width:clamp(260px,34vw,460px);border-radius:22px;filter:drop-shadow(0 50px 100px rgba(0,0,0,.5));opacity:0;transform:translateX(60px) scale(.9)}
+.cbadge{position:absolute;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(14px);border-radius:14px;padding:.85rem 1.3rem;font-weight:600;color:#fff;font-size:.8rem;opacity:0;transform:scale(.75) translateY(10px)}
+.cbadge .big{font-family:'Fraunces',serif;font-size:1.55rem;display:block;margin-bottom:.1rem}
+
+/* ── §6 FEATURES ── */
+#sc-feat{background:var(--white)}
+#feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3.5rem}
+.fcard{background:var(--off);border-radius:26px;padding:2.2rem 1.8rem;opacity:0;transform:translateY(60px) scale(.9);border:1px solid rgba(11,37,88,.05);transition:box-shadow .3s}
+.fcard:hover{box-shadow:0 24px 60px rgba(11,37,88,.1)}
+.ficon{width:50px;height:50px;background:var(--sky);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin-bottom:1.1rem}
+.fcard h3{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:.45rem}
+.fcard p{font-size:.82rem;color:var(--muted);line-height:1.65}
+
+
+/* ── §7 SPLIT ── */
+#split{padding:11rem 7vw;background:var(--off);display:grid;grid-template-columns:1fr 1fr;gap:8vw;align-items:center;position:relative;overflow:hidden;z-index:1}
+#split-img-wrap{position:relative;opacity:0;transform:translateX(-55px)}
+#split-img{width:100%;border-radius:28px;box-shadow:0 32px 80px rgba(11,37,88,.12)}
+.sbdg{position:absolute;background:#fff;border-radius:15px;padding:.85rem 1.3rem;box-shadow:0 12px 36px rgba(11,37,88,.12);font-weight:600;font-size:.8rem;color:var(--navy);opacity:0;transform:scale(.75)}
+.sbdg .big{font-family:'Fraunces',serif;font-size:1.5rem;display:block;margin-bottom:.1rem}
+.sbdg1{top:-1.8rem;right:-1.8rem}.sbdg2{bottom:2.5rem;left:-1.8rem}
+#split-txt{opacity:0;transform:translateX(45px)}
+.steps{display:flex;flex-direction:column;gap:1.6rem;margin-top:2rem}
+.step{display:flex;gap:1.2rem;align-items:flex-start;opacity:0;transform:translateX(22px)}
+.snum{flex-shrink:0;width:36px;height:36px;background:var(--sky);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:.8rem;font-weight:800;color:var(--navy)}
+.sbh h4{font-size:.93rem;font-weight:700;color:var(--navy);margin-bottom:.25rem}
+.sbh p{font-size:.82rem;color:var(--muted);line-height:1.62}
+
+/* ── FILTER SHOWCASE ── */
+#filters-showcase{padding:8rem 7vw;background:#fff;position:relative;overflow:hidden;z-index:1}
+#filters-showcase .inner{max-width:1300px;margin:0 auto}
+.fs-header{text-align:center;margin-bottom:5rem;opacity:0;transform:translateY(30px)}
+.fs-header h2{font-family:'Fraunces',serif;font-weight:800;font-size:clamp(2.2rem,5vw,4.5rem);line-height:.98;letter-spacing:-.025em;color:var(--navy)}
+.fs-header p{font-size:.95rem;color:var(--muted);margin-top:1rem;max-width:460px;margin-left:auto;margin-right:auto;line-height:1.7}
+.fs-layout{display:grid;grid-template-columns:1fr 1.1fr;gap:6vw;align-items:center}
+#fs-main-img{width:100%;border-radius:28px;box-shadow:0 40px 100px rgba(11,37,88,.14);opacity:0;transform:translateX(-60px)}
+.fs-size-cards{display:flex;flex-direction:column;gap:1.2rem}
+.fsc{display:flex;align-items:center;gap:1.4rem;background:var(--off);border-radius:20px;padding:1.4rem 1.8rem;opacity:0;transform:translateX(50px);border:1.5px solid transparent;transition:border-color .25s,box-shadow .25s,transform .25s}
+.fsc:hover{border-color:var(--sky);box-shadow:0 12px 40px rgba(11,37,88,.08);transform:translateX(0) translateY(-2px)}
+.fsc-dot{width:48px;height:48px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:800;font-size:1rem;color:#fff}
+.fsc-dot.s6{background:linear-gradient(135deg,var(--lblue),var(--blue))}
+.fsc-dot.s7{background:linear-gradient(135deg,var(--pink-mid),var(--pink))}
+.fsc-dot.s9{background:linear-gradient(135deg,var(--green-mid),var(--green))}
+.fsc-info h4{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:800;color:var(--navy)}
+.fsc-info p{font-size:.8rem;color:var(--muted);margin-top:.15rem;line-height:1.5}
+
+/* ── SHOP ── */
+#shop{padding:9rem 7vw 7rem;background:var(--off);position:relative;overflow:hidden;z-index:1}
+#shop .inner{max-width:1300px;margin:0 auto}
+.shop-hd{text-align:center;margin-bottom:4.5rem;opacity:0;transform:translateY(30px)}
+.shop-hd h2{font-family:'Fraunces',serif;font-weight:800;font-size:clamp(2.2rem,5vw,4.5rem);line-height:.98;letter-spacing:-.025em;color:var(--navy)}
+.shop-hd p{font-size:.95rem;color:var(--muted);margin-top:1rem;max-width:460px;margin-left:auto;margin-right:auto;line-height:1.7}
+.shop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+.shop-card{background:#fff;border-radius:28px;overflow:hidden;border:1.5px solid rgba(11,37,88,.07);opacity:0;transform:translateY(55px) scale(.96);transition:box-shadow .3s,transform .3s}
+.shop-card:hover{box-shadow:0 28px 70px rgba(11,37,88,.12);transform:translateY(-4px) scale(1)}
+.sc-img{width:100%;aspect-ratio:1;object-fit:contain;padding:2.5rem}
+.sc-img.bg-blue{background:linear-gradient(145deg,#D6EEFF,#A8D8FF)}
+.sc-img.bg-pink{background:linear-gradient(145deg,#FFE0EC,#FFB3CE)}
+.sc-img.bg-green{background:linear-gradient(145deg,#CCFADC,#88EBA8)}
+.sc-body{padding:1.6rem 1.8rem 2rem}
+.sc-badge{font-size:.58rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;margin-bottom:.5rem}
+.sc-badge.b-blue{color:var(--blue)}.sc-badge.b-pink{color:var(--pink)}.sc-badge.b-green{color:var(--green)}
+.sc-name{font-family:'Fraunces',serif;font-size:1.35rem;font-weight:800;color:var(--navy)}
+.sc-desc{font-size:.82rem;color:var(--muted);margin-top:.3rem;line-height:1.6}
+.sc-opts{margin-top:1.4rem}
+.sc-opt-label{font-size:.62rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.55rem}
+.sc-btns{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+.sc-btn{padding:.42rem .95rem;border-radius:100px;border:1.5px solid rgba(11,37,88,.15);background:none;font-size:.78rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all .18s}
+.sc-btn:hover{border-color:var(--navy);color:var(--navy)}
+.sc-btn.active.b-blue{background:var(--blue);border-color:var(--blue);color:#fff}
+.sc-btn.active.b-pink{background:var(--pink);border-color:var(--pink);color:#fff}
+.sc-btn.active.b-green{background:var(--green);border-color:var(--green);color:#fff}
+.sc-add-wrap{display:flex;align-items:center;justify-content:space-between;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid rgba(11,37,88,.06)}
+.sc-price{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:800;color:var(--navy)}
+.sc-price-sub{font-size:.68rem;color:var(--muted);margin-top:.05rem}
+.sc-add-btn{background:var(--navy);color:#fff;border:none;border-radius:100px;padding:.72rem 1.5rem;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .22s;letter-spacing:.04em;white-space:nowrap}
+.sc-add-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(11,37,88,.25)}
+.sc-add-btn.blue-btn{background:var(--blue)}.sc-add-btn.pink-btn{background:var(--pink)}.sc-add-btn.green-btn{background:var(--green)}
+
+/* ── MANIFESTO ── */
+#sc-mani{background:#060B1E;background-image:radial-gradient(ellipse at 50% 110%,rgba(38,120,212,.32) 0%,transparent 60%)}
+#mani-inner{text-align:center;padding:0 8vw;position:relative;z-index:2}
+.mwrap{overflow:hidden;display:block;margin-bottom:.25rem}
+.mline{display:block;font-family:'Fraunces',serif;font-weight:800;font-size:clamp(2rem,6vw,6rem);color:#fff;line-height:1.12;transform:translateY(115%) rotate(1.5deg)}
+.ml-ac{color:var(--lblue);font-style:italic}
+.ml-sm{font-size:clamp(.95rem,2vw,1.7rem);font-weight:300;font-style:italic;color:rgba(255,255,255,.32)}
+
+/* ── CTA ── */
+#cta{padding:10rem 7vw 8rem;background:var(--white);text-align:center;position:relative;overflow:hidden;z-index:1}
+#cta-hd{opacity:0;transform:translateY(30px)}
+#cta-hd h2{font-family:'Fraunces',serif;font-weight:800;font-size:clamp(2.5rem,5.5vw,5rem);color:var(--navy);line-height:1.02;letter-spacing:-.025em;margin-bottom:1rem}
+#cta-hd p{font-size:1rem;color:var(--muted);max-width:420px;margin:0 auto 4.5rem;line-height:1.75}
+#pack-row{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:3.5rem}
+.pk{width:clamp(200px,22vw,268px);border-radius:28px;overflow:hidden;border:1px solid rgba(11,37,88,.08);opacity:0;transform:translateY(60px) scale(.94);text-align:left;background:#fff;transition:box-shadow .35s,transform .35s}
+.pk:hover{transform:translateY(-8px)!important;box-shadow:0 32px 75px rgba(11,37,88,.13)}
+.pk-img{width:100%;aspect-ratio:1;object-fit:contain;padding:1.5rem}
+.pk-img.bg-blue{background:linear-gradient(145deg,#D6EEFF,#A8D8FF)}
+.pk-img.bg-pink{background:linear-gradient(145deg,#FFE0EC,#FFB3CE)}
+.pk-img.bg-green{background:linear-gradient(145deg,#CCFADC,#88EBA8)}
+.pk-body{padding:1.4rem}
+.pk-t{font-size:.58rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.25rem}
+.pk-t.t-blue{color:var(--blue)}.pk-t.t-pink{color:var(--pink)}.pk-t.t-green{color:var(--green)}
+.pk-n{font-family:'Fraunces',serif;font-size:1.25rem;font-weight:700;color:var(--navy);margin-bottom:.2rem}
+.pk-d{font-size:.77rem;color:var(--muted)}
+#cta-btn{display:inline-flex;align-items:center;gap:.75rem;background:var(--navy);color:#fff;padding:1.2rem 3rem;border-radius:100px;font-size:.9rem;font-weight:700;letter-spacing:.06em;text-decoration:none;box-shadow:0 14px 45px rgba(11,37,88,.28);transition:all .28s;opacity:0;transform:translateY(22px)}
+#cta-btn:hover{background:var(--navy2);transform:translateY(-3px)!important}
+#cta-btn::after{content:'→';font-size:1.05rem}
+
+/* ── TICKER ── */
+.tkbar{overflow:hidden;padding:1.3rem 0;position:relative;z-index:2}
+.tkbar.dk{background:var(--navy)}.tkbar.lt{background:var(--off);border-top:1px solid rgba(11,37,88,.05);border-bottom:1px solid rgba(11,37,88,.05)}
+.tkbar.pk{background:linear-gradient(90deg,#FFD0E2,#FFE0EC,#FFD0E2)}
+.tkbar.gk{background:linear-gradient(90deg,#B8F5CA,#CCFADC,#B8F5CA)}
+.tkt{display:inline-block;white-space:nowrap;animation:tk 22s linear infinite}
+.tkt span{font-size:.7rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;padding:0 2rem}
+.tkbar.dk .tkt span{color:rgba(255,255,255,.2)}.tkbar.lt .tkt span{color:rgba(11,37,88,.18)}
+.tkbar.pk .tkt span{color:rgba(160,0,60,.3)}.tkbar.gk .tkt span{color:rgba(10,100,40,.3)}
+.tkbar.dk .tkt span.hi{color:var(--lblue)}.tkbar.lt .tkt span.hi{color:var(--blue)}
+.tkbar.pk .tkt span.hi{color:var(--pink)}.tkbar.gk .tkt span.hi{color:var(--green)}
+@keyframes tk{from{transform:translateX(0)}to{transform:translateX(-50%)}}.rev{animation-direction:reverse}
+
+/* ── FOOTER ── */
+footer{background:var(--navy);padding:3rem 7vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;position:relative;z-index:2}
+.flogo img{height:72px;object-fit:contain}
+.flinks{display:flex;gap:2rem}.flinks a{font-size:.68rem;color:rgba(255,255,255,.32);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;transition:color .2s}
+.flinks a:hover{color:var(--lblue)}.fcopy{font-size:.68rem;color:rgba(255,255,255,.25);letter-spacing:.08em}
+
+/* ── FILTER STAGE ── */
+#sc-fstage{background:var(--off);overflow:hidden}
+.fstage-phase{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 7vw;gap:6vw}
+.fstage-left{width:50%;position:relative;z-index:2}
+.fstage-right{width:50%;display:flex;justify-content:center;align-items:center;position:relative}
+.fsp-tag{font-size:.64rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:.9rem;opacity:0;transform:translateY(14px)}
+.fsp-h{font-family:'Fraunces',serif;font-weight:800;font-size:clamp(2.2rem,4.5vw,4.5rem);line-height:.98;letter-spacing:-.025em;color:var(--navy);opacity:0;transform:translateY(28px)}
+.fsp-pills{display:flex;flex-direction:column;gap:.7rem;margin-top:2rem}
+.fsp-pill{display:flex;align-items:center;gap:.9rem;padding:.72rem 1.3rem;background:#fff;border-radius:100px;font-size:.84rem;font-weight:500;color:var(--navy);border:1px solid rgba(11,37,88,.08);opacity:0;transform:translateX(-28px);box-shadow:0 4px 18px rgba(11,37,88,.06)}
+.fsp-filter-wrap{position:relative;display:flex;align-items:center;justify-content:center;perspective:520px;perspective-origin:50% 40%}
+.fsp-glow{position:absolute;width:360px;height:360px;border-radius:50%;filter:blur(90px);opacity:.55;z-index:0}
+
+/* ── 3D ACTIVATED CARBON FILTER CYLINDER ── */
+.fsp-filter-3d{position:relative;z-index:1;opacity:0;will-change:transform;transform-style:preserve-3d}
+.f3d-face{position:absolute;top:0;backface-visibility:visible;transform-origin:center center}
+.f3d-cap{position:absolute;left:0;border-radius:50%;backface-visibility:visible;overflow:hidden}
+.f3d-hole{position:absolute;border-radius:50%;background:#1a1a1a;box-shadow:inset 0 1px 4px #000,inset 0 0 2px rgba(0,0,0,.8)}
+.f3d-label-band{position:absolute;left:0;right:0;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:900;font-style:italic;letter-spacing:-.01em;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.4);backface-visibility:visible;z-index:4;pointer-events:none}
+@media(max-width:900px){.fstage-phase{flex-direction:column;gap:2.5rem}.fstage-left,.fstage-right{width:100%}.fstage-left{order:2}.fstage-right{order:1}}
+@media(max-width:960px){.shop-grid,.fs-layout{grid-template-columns:1fr}}
+@media(max-width:900px){#hero-grid,.color-inner,#combo-inner-grid,#split{grid-template-columns:1fr}#feat-grid{grid-template-columns:repeat(2,1fr)}#hero-grid{padding-top:5rem;text-align:center}.hero-sub,.hbtns{margin-left:auto;margin-right:auto;justify-content:center}#hero-right{order:-1}}
+
+/* ══ REDESIGN: HERO AS BLUE CARD (matches kaerosmoke.com screenshot) ══ */
+#hero{background:#F4F7FF;padding:clamp(1rem,2.5vw,1.8rem) clamp(1rem,3vw,2.5rem) clamp(1.5rem,3vw,2.5rem);min-height:auto;display:block;overflow:visible;align-items:unset}
+#hero-card{background:linear-gradient(130deg,#0e3a94 0%,#1c55cc 40%,#2e78e8 100%);border-radius:clamp(18px,2.5vw,28px);position:relative;overflow:hidden;min-height:clamp(380px,50vw,560px);display:flex;align-items:stretch}
+#hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:3vw;align-items:center;width:100%;max-width:none;margin:0;padding:clamp(2rem,4vw,3.5rem) clamp(2rem,4.5vw,4rem);position:relative;z-index:3}
+.eyebrow{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.95)}
+#hero h1{color:#fff}
+.hero-sub{color:rgba(255,255,255,.78)}
+.bs{background:#fff!important;color:var(--navy)!important;box-shadow:0 14px 40px rgba(0,0,0,.22)}
+.bs:hover{background:#e8f0ff!important;transform:translateY(-2px)}
+.bt{color:rgba(255,255,255,.88)}
+.bt::after{color:#fff}
+.hpill{background:rgba(255,255,255,.15);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.25);color:#fff}
+/* Card background clouds */
+#hero-card-clouds{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+#hero-card-clouds img{width:100%;height:100%;object-fit:cover;opacity:.06}
+
+/* ══ HAMBURGER & MOBILE MENU ══ */
+.hamburger{display:none;flex-direction:column;gap:5.5px;cursor:pointer;padding:8px;background:none;border:none;border-radius:8px;margin-left:.5rem}
+.hamburger span{display:block;width:22px;height:2.5px;background:var(--navy);border-radius:2px;transition:all .3s}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5.5px,5.5px)}
+.hamburger.active span:nth-child(2){opacity:0;transform:translateX(8px)}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5.5px,-5.5px)}
+#mobile-menu{display:none;position:fixed;top:0;left:0;right:0;background:#fff;z-index:850;padding:5rem 6vw 2rem;border-bottom:1px solid rgba(11,37,88,.07);box-shadow:0 16px 50px rgba(11,37,88,.12)}
+#mobile-menu.open{display:block;animation:slideDown .28s ease}
+@keyframes slideDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+#mobile-menu ul{list-style:none;display:flex;flex-direction:column}
+#mobile-menu ul li a,#mobile-menu ul li button{display:block;width:100%;padding:.9rem 0;font-size:1.05rem;font-weight:600;color:var(--navy);text-decoration:none;border-bottom:1px solid rgba(11,37,88,.06);background:none;border-left:none;border-right:none;border-top:none;cursor:pointer;text-align:left;font-family:'Space Grotesk',sans-serif;transition:color .2s}
+#mobile-menu ul li a:hover,#mobile-menu ul li button:hover{color:var(--blue)}
+
+/* ══ MOBILE FIRST ══ */
+@media(max-width:760px){
+  .hamburger{display:flex}
+  .nlinks{display:none}
+  .nlogo img{height:clamp(46px,12vw,68px)}
+  #nav{padding:.4rem 4vw}
+
+  /* Hero card */
+  #hero{padding:.7rem .85rem 1.2rem}
+  #hero-card{min-height:auto;border-radius:16px}
+  #hero-grid{grid-template-columns:1fr;gap:1.4rem;padding:1.6rem 1.4rem 2rem;text-align:center}
+  #hero-right{order:-1}
+  #hprod{width:clamp(160px,62vw,260px)}
+  .hpill{display:none}
+  .hint-wrap{display:none}
+  #hero h1{font-size:clamp(1.9rem,8.5vw,2.8rem)}
+  .hero-sub{font-size:.86rem;max-width:100%;margin-left:auto;margin-right:auto}
+  .hbtns{flex-direction:column;align-items:center;gap:.65rem;width:100%}
+  .bs,.bt{width:100%;max-width:240px;text-align:center;justify-content:center;display:flex}
+  .eyebrow{margin-left:auto;margin-right:auto}
+
+  /* Color sections */
+  .color-inner{grid-template-columns:1fr;gap:1.4rem;padding:0 5vw;text-align:center}
+  .color-img-wrap{order:-1}
+  .color-prod{width:clamp(140px,52vw,230px)}
+  .big-num{font-size:clamp(80px,22vw,150px)}
+  .color-chips{justify-content:center}
+  .sec-h{font-size:clamp(1.8rem,7vw,2.8rem)}
+  .pin-scene{padding:1rem 0}
+
+  /* Combo */
+  #combo-inner-grid{grid-template-columns:1fr;gap:1.8rem;padding:0 5vw}
+  #combo-img{width:clamp(190px,68vw,310px)}
+  .dk-h{font-size:clamp(1.6rem,6.5vw,2.6rem)}
+  .cbadge{display:none}
+
+  /* Features */
+  #feat-grid{grid-template-columns:1fr 1fr;gap:.8rem;margin-top:1.6rem}
+  .fcard{padding:1.2rem .95rem;border-radius:14px}
+  .ficon{width:40px;height:40px;font-size:1.1rem;border-radius:10px}
+  #feat-inner-wrap{padding:0 5vw}
+
+  /* Filter stage */
+  .fstage-phase{flex-direction:column;gap:1rem;padding:0 5vw;align-items:center}
+  .fstage-left,.fstage-right{width:100%;max-width:100%}
+  .fstage-left{order:2}
+  .fstage-right{order:1;height:180px;display:flex;align-items:center;justify-content:center;overflow:visible}
+  .fsp-filter-wrap{transform:scale(.58);transform-origin:center center}
+  .fsp-h{font-size:clamp(1.5rem,6.5vw,2.4rem)}
+  .fsp-pills{gap:.4rem}
+  .fsp-pill{font-size:.75rem;padding:.5rem .85rem}
+
+  /* Split */
+  #split{padding:2.8rem 5vw;grid-template-columns:1fr;gap:1.8rem}
+  #split-img-wrap{order:-1}
+  .sbdg1{top:-.7rem;right:-.3rem}
+  .sbdg2{bottom:.8rem;left:-.3rem}
+  .sbdg{padding:.65rem 1rem;font-size:.72rem}
+  .sbdg .big{font-size:1.2rem}
+
+  /* Showcase */
+  #filters-showcase{padding:3rem 5vw}
+  .fs-layout{grid-template-columns:1fr;gap:1.8rem}
+  .fs-header{margin-bottom:2.2rem}
+  .fs-header h2{font-size:clamp(1.8rem,7vw,2.8rem)}
+
+  /* Shop */
+  #shop{padding:3rem 5vw 2.2rem}
+  .shop-grid{grid-template-columns:1fr;gap:1.1rem}
+  .shop-hd h2{font-size:clamp(1.8rem,7vw,2.8rem)}
+  .sc-img{padding:1.8rem}
+
+  /* Manifesto */
+  .mline{font-size:clamp(1.6rem,7vw,3rem)}
+  #mani-inner{padding:0 5vw}
+
+  /* CTA */
+  #cta{padding:3.5rem 5vw 2.5rem}
+  #pack-row{gap:.8rem}
+  .pk{width:clamp(125px,42vw,185px);border-radius:16px}
+  #cta-hd h2{font-size:clamp(1.8rem,7vw,2.8rem)}
+  #cta-btn{padding:.85rem 1.6rem;font-size:.8rem}
+
+  /* Footer */
+  footer{flex-direction:column;text-align:center;padding:1.8rem 5vw;gap:.7rem}
+  .flinks{flex-wrap:wrap;justify-content:center;gap:.9rem}
+  .flogo img{height:58px}
+}
+@media(max-width:420px){
+  #hero h1{font-size:clamp(1.7rem,8vw,2.4rem)}
+  #feat-grid{grid-template-columns:1fr}
+  .mline{font-size:clamp(1.5rem,7.5vw,2.6rem)}
+  .pk{width:clamp(110px,44vw,170px)}
+}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+
+<!-- CART -->
+<div id="cart-overlay"></div>
+<div id="cart-drawer">
+  <div id="cart-header"><h3>Warenkorb</h3><button id="cart-close">✕</button></div>
+  <div id="cart-items-wrap"><div id="cart-empty"><div class="ce-icon">🛒</div><p>Noch nichts drin</p></div><div id="cart-items"></div></div>
+  <div id="cart-footer">
+    <div id="cart-total-row"><span>Gesamt</span><span id="cart-total">0,00 €</span></div>
+    <a href="https://kaerosmoke.com" id="cart-checkout">Zur Kasse →</a>
+    <button id="cart-continue" onclick="Cart.close()">Weiter einkaufen</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nlogo"><img src="logo-sticker.png" alt="KAERO SMOKE"></a>
+  <ul class="nlinks">
+    <li><a href="#po-blue">Produkte</a></li>
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#sc-feat">Vorteile</a></li>
+    <li><button id="cart-nav-btn" onclick="Cart.open()">🛒 Warenkorb <span id="cart-count">0</span></button></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:.5rem">
+    <button id="cart-nav-btn-mobile" onclick="Cart.open()" style="display:none;align-items:center;gap:.4rem;background:none;border:1.5px solid rgba(11,37,88,.15);color:var(--navy);padding:.45rem .9rem;border-radius:100px;font-size:.72rem;font-weight:600;cursor:pointer">🛒 <span id="cart-count-mobile" style="display:none;background:var(--pink);color:#fff;border-radius:50%;width:16px;height:16px;font-size:.55rem;font-weight:700;align-items:center;justify-content:center"></span></button>
+    <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Menü"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div id="mobile-menu">
+  <ul>
+    <li><a href="#po-blue" onclick="closeMobileNav()">Produkte</a></li>
+    <li><a href="#shop" onclick="closeMobileNav()">Shop</a></li>
+    <li><a href="#sc-feat" onclick="closeMobileNav()">Vorteile</a></li>
+    <li><button onclick="Cart.open();closeMobileNav()">🛒 Warenkorb</button></li>
+  </ul>
+</div>
+
+<!-- ══ §0 LOGO INTRO ══ -->
+<div id="po-intro">
+  <div id="sc-intro">
+    <!-- Logo clouds in intro (white/translucent) -->
+    <div class="kcloud" style="width:280px;height:160px;top:8%;left:5%;opacity:.09">
+      <svg viewBox="0 0 280 160" fill="none"><path d="M34,112 Q14,112 13,90 Q12,68 32,66 Q30,46 52,44 Q54,24 78,28 Q88,10 115,18 Q135,4 158,14 Q180,6 196,20 Q218,16 224,38 Q244,40 242,62 Q256,68 252,88 Q248,108 228,110 Q206,124 180,116 Q156,130 128,120 Q100,134 76,122 Q50,130 36,114 Z" stroke="white" stroke-width="3" fill="rgba(255,255,255,.07)"/><ellipse cx="13" cy="90" rx="7" ry="7" fill="white" opacity=".4"/></svg>
+    </div>
+    <div class="kcloud" style="width:200px;height:115px;bottom:15%;right:6%;opacity:.07">
+      <svg viewBox="0 0 200 115" fill="none"><path d="M24,82 Q8,82 8,64 Q8,46 24,44 Q22,28 42,26 Q44,10 66,14 Q76,2 98,8 Q118,0 134,10 Q154,6 158,26 Q172,28 170,46 Q180,50 178,66 Q176,82 158,84 Q136,96 112,88 Q86,100 64,90 Q40,98 26,84 Z" stroke="white" stroke-width="2.5" fill="rgba(255,255,255,.06)"/></svg>
+    </div>
+    <div class="kcloud" style="width:160px;height:90px;top:20%;right:12%;opacity:.06">
+      <svg viewBox="0 0 160 90" fill="none"><path d="M18,64 Q6,64 6,50 Q6,36 18,34 Q16,22 30,20 Q32,8 50,12 Q58,2 74,6 Q90,0 100,8 Q114,4 116,20 Q126,22 124,36 Q130,40 128,52 Q126,64 112,66 Q94,74 74,68 Q52,76 36,68 Z" stroke="white" stroke-width="2" fill="rgba(255,255,255,.05)"/></svg>
+    </div>
+    <img src="logo-sticker.png" id="intro-logo" alt="KAERO SMOKE">
+    <div id="intro-tag">Activated Coconut Carbon Filters</div>
+    <div id="intro-scroll"><span>Scroll</span><div class="imouse"><div class="idot"></div></div></div>
+  </div>
+</div>
+
+<!-- ══ §1 HERO ══ -->
+<section id="hero">
+  <div id="hero-card">
+    <!-- Subtle cloud pattern inside card -->
+    <div id="hero-card-clouds">
+      <img src="cloud-scroll.svg" alt="" style="position:absolute;width:340px;top:-40px;right:-30px;opacity:.13;filter:brightness(0) invert(1)">
+      <img src="cloud-scroll.svg" alt="" style="position:absolute;width:220px;bottom:-20px;left:10%;opacity:.09;filter:brightness(0) invert(1)">
+      <img src="cloud-scroll.svg" alt="" style="position:absolute;width:180px;top:30%;right:38%;opacity:.06;filter:brightness(0) invert(1)">
+    </div>
+
+    <div id="hero-grid">
+      <div id="hero-left">
+        <div class="eyebrow" id="ey">✦ Kokosschalen-Aktivkohle</div>
+        <h1>
+          <span class="ww"><span class="wi" id="w1">Entdecke</span></span>
+          <span class="ww"><span class="wi" id="w2">unsere</span></span><br>
+          <span class="ww"><span class="wi ac" id="w3">Kollektion.</span></span>
+        </h1>
+        <p class="hero-sub" id="hsub">Dreifach aktivierte Kokosschalen-Kohle. Drei Farben, drei Durchmesser — präzise gefertigt für echten Geschmack.</p>
+        <div class="hbtns" id="hbtns">
+          <a href="#shop" class="bs">Jetzt bestellen</a>
+          <a href="#po-blue" class="bt">Alle Filter</a>
+        </div>
+      </div>
+      <div id="hero-right">
+        <img src="blue-combo.webp" alt="KAERO Blue Combo" id="hprod">
+        <div class="hpill" id="pp1" style="top:8%;left:-7%">🥥 100% Kokosschalen-Aktivkohle</div>
+        <div class="hpill" id="pp2" style="bottom:20%;right:-5%">📏 6mm · 7mm · 9mm</div>
+        <div class="hpill" id="pp3" style="bottom:42%;left:-13%">🏙️ Vertrieb aus Frankfurt</div>
+      </div>
+    </div>
+    <div class="hint-wrap" id="hint" style="bottom:1.5rem"><span>Scroll</span><div class="mouse"><div class="mdot"></div></div></div>
+  </div>
+</section>
+
+<div class="tkbar dk"><div class="tkt"><span>KAERO SMOKE</span><span class="hi">✦</span><span>Activated Carbon</span><span class="hi">✦</span><span>Frankfurt</span><span class="hi">✦</span><span>Filter the Ordinary</span><span class="hi">✦</span><span>Pink · Green · Blue</span><span class="hi">✦</span><span>6mm · 7mm · 9mm</span><span class="hi">✦</span><span>KAERO SMOKE</span><span class="hi">✦</span><span>Activated Carbon</span><span class="hi">✦</span><span>Frankfurt</span><span class="hi">✦</span><span>Filter the Ordinary</span><span class="hi">✦</span><span>Pink · Green · Blue</span><span class="hi">✦</span><span>6mm · 7mm · 9mm</span><span class="hi">✦</span></div></div>
+
+<!-- ══ §2 BLUE ══ -->
+<div class="pin-outer" id="po-blue">
+  <div class="pin-scene" id="sc-blue">
+    <div class="kcloud" style="width:380px;height:218px;top:4%;right:2%;opacity:.35">
+      <svg viewBox="0 0 380 218" fill="none"><path d="M46,154 Q20,154 18,128 Q16,102 40,100 Q38,76 64,74 Q66,50 96,54 Q108,30 142,36 Q164,18 192,30 Q218,18 242,30 Q272,22 284,50 Q310,44 314,72 Q338,78 334,106 Q354,114 348,142 Q342,170 314,172 Q288,192 256,182 Q226,200 192,188 Q160,204 126,190 Q90,204 64,186 Q36,192 20,168 Z" stroke="#1055A8" stroke-width="4" fill="rgba(168,216,255,0.55)"/><ellipse cx="18" cy="128" rx="9" ry="9" fill="#1055A8" opacity=".6"/><ellipse cx="348" cy="142" rx="8" ry="8" fill="#1055A8" opacity=".5"/></svg>
+    </div>
+    <div class="kcloud" style="width:230px;height:132px;bottom:10%;left:4%;opacity:.28">
+      <svg viewBox="0 0 230 132" fill="none"><path d="M28,96 Q10,96 10,76 Q10,56 28,54 Q26,36 48,34 Q50,16 76,20 Q88,4 116,10 Q140,0 158,12 Q182,6 186,28 Q204,30 202,52 Q216,58 214,78 Q212,98 190,100 Q164,116 136,106 Q106,120 78,108 Q48,118 32,102 Z" stroke="#1055A8" stroke-width="3" fill="rgba(168,216,255,0.5)"/></svg>
+    </div>
+    <div class="color-inner">
+      <div style="position:relative;z-index:1">
+        <div class="big-num bn-blue" id="bn-blue">01</div>
+        <p class="sec-tag tag-blue" id="bt1">— Light Blue · Der Klassiker</p>
+        <h2 class="sec-h h-blue" id="bt2">Klar wie<br>der erste Zug.</h2>
+        <p class="sec-p p-blue" id="bt3">Sauber, stark, unverwechselbar. Der blaue KAERO Filter — meistverkauft, sofort erkannt. Wähle deinen Durchmesser.</p>
+        <div class="color-chips">
+          <div class="chip chip-blue" id="bc1"><div class="chip-dot" style="background:var(--blue)"></div>6mm</div>
+          <div class="chip chip-blue" id="bc2"><div class="chip-dot" style="background:var(--blue)"></div>7mm</div>
+          <div class="chip chip-blue" id="bc3"><div class="chip-dot" style="background:var(--blue)"></div>9mm</div>
+        </div>
+      </div>
+      <div class="color-img-wrap"><img src="blue-50.webp" alt="KAERO Blue" class="color-prod" id="prod-blue"></div>
+    </div>
+  </div>
+</div>
+
+<div class="tkbar pk"><div class="tkt rev"><span>BOLD · FRESH · ICONIC</span><span class="hi">✦</span><span>KAERO PINK</span><span class="hi">✦</span><span>6mm · 7mm · 9mm</span><span class="hi">✦</span><span>BOLD · FRESH · ICONIC</span><span class="hi">✦</span><span>KAERO PINK</span><span class="hi">✦</span><span>6mm · 7mm · 9mm</span><span class="hi">✦</span></div></div>
+
+<!-- ══ §3 PINK ══ -->
+<div class="pin-outer" id="po-pink">
+  <div class="pin-scene" id="sc-pink">
+    <div class="kcloud" style="width:360px;height:207px;top:5%;left:3%;opacity:.38">
+      <svg viewBox="0 0 360 207" fill="none"><path d="M44,146 Q18,146 16,120 Q14,94 38,92 Q36,68 62,66 Q64,42 94,46 Q106,22 140,28 Q162,12 190,22 Q216,12 238,26 Q266,18 278,46 Q304,40 308,68 Q328,74 326,102 Q342,110 338,138 Q334,166 308,168 Q280,188 248,178 Q218,196 186,184 Q154,198 122,184 Q88,196 62,178 Q34,184 18,158 Z" stroke="#CC0055" stroke-width="4" fill="rgba(255,179,206,0.55)"/><ellipse cx="16" cy="120" rx="9" ry="9" fill="#CC0055" opacity=".6"/></svg>
+    </div>
+    <div class="kcloud" style="width:200px;height:115px;bottom:12%;right:5%;opacity:.3">
+      <svg viewBox="0 0 200 115" fill="none"><path d="M24,82 Q8,82 8,64 Q8,46 24,44 Q22,28 44,26 Q46,10 70,14 Q82,2 104,8 Q126,0 142,12 Q162,6 166,28 Q180,30 178,50 Q188,54 186,72 Q184,90 162,92 Q138,106 110,96 Q82,108 58,96 Q32,104 26,84 Z" stroke="#CC0055" stroke-width="3" fill="rgba(255,179,206,0.5)"/></svg>
+    </div>
+    <div class="color-inner" style="direction:rtl">
+      <div style="direction:ltr;position:relative;z-index:1">
+        <div class="big-num bn-pink" id="bn-pink">02</div>
+        <p class="sec-tag tag-pink" id="pt1">— Pink · Bold Edition</p>
+        <h2 class="sec-h h-pink" id="pt2">Knallig.<br>Kompromisslos.</h2>
+        <p class="sec-p p-pink" id="pt3">Wer Pink wählt, hat Geschmack bewiesen — bevor auch nur ein Zug genossen wird. Mutig. Direkt. Unübersehbar.</p>
+        <div class="color-chips">
+          <div class="chip chip-pink" id="pc1"><div class="chip-dot" style="background:var(--pink)"></div>6mm</div>
+          <div class="chip chip-pink" id="pc2"><div class="chip-dot" style="background:var(--pink)"></div>7mm</div>
+          <div class="chip chip-pink" id="pc3"><div class="chip-dot" style="background:var(--pink)"></div>9mm</div>
+        </div>
+      </div>
+      <div class="color-img-wrap" style="direction:ltr"><img src="pink-50.avif" alt="KAERO Pink" class="color-prod pink-shadow" id="prod-pink"></div>
+    </div>
+  </div>
+</div>
+
+<div class="tkbar gk"><div class="tkt"><span>NATURAL · CLEAN · PURE</span><span class="hi">✦</span><span>KAERO GREEN</span><span class="hi">✦</span><span>6mm · 7mm · 9mm</span><span class="hi">✦</span><span>NATURAL · CLEAN · PURE</span><span class="hi">✦</span><span>KAERO GREEN</span><span class="hi">✦</span><span>6mm · 7mm · 9mm</span><span class="hi">✦</span></div></div>
+
+<!-- ══ §4 GREEN ══ -->
+<div class="pin-outer" id="po-green">
+  <div class="pin-scene" id="sc-green">
+    <div class="kcloud" style="width:370px;height:212px;top:4%;right:4%;opacity:.38">
+      <svg viewBox="0 0 370 212" fill="none"><path d="M44,150 Q18,150 16,124 Q14,98 40,96 Q38,72 64,70 Q66,46 96,50 Q108,26 144,32 Q166,14 196,26 Q222,14 246,28 Q276,20 290,50 Q316,44 320,74 Q342,82 338,112 Q356,120 350,150 Q344,180 316,182 Q288,202 254,190 Q222,208 188,196 Q154,212 120,196 Q84,208 58,190 Q28,196 14,168 Z" stroke="#0A7A2E" stroke-width="4" fill="rgba(136,235,168,0.55)"/><ellipse cx="16" cy="124" rx="9" ry="9" fill="#0A7A2E" opacity=".6"/><ellipse cx="350" cy="150" rx="8" ry="8" fill="#0A7A2E" opacity=".5"/></svg>
+    </div>
+    <div class="kcloud" style="width:210px;height:120px;bottom:11%;left:4%;opacity:.3">
+      <svg viewBox="0 0 210 120" fill="none"><path d="M26,88 Q8,88 8,68 Q8,50 26,48 Q24,30 48,28 Q50,10 76,14 Q88,2 114,8 Q138,0 154,12 Q178,6 182,30 Q198,32 196,54 Q208,60 206,80 Q204,98 180,100 Q154,114 124,104 Q94,116 68,104 Q40,112 28,92 Z" stroke="#0A7A2E" stroke-width="3" fill="rgba(136,235,168,0.5)"/></svg>
+    </div>
+    <div class="color-inner">
+      <div style="position:relative;z-index:1">
+        <div class="big-num bn-green" id="bn-green">03</div>
+        <p class="sec-tag tag-green" id="gt1">— Green · Natural Edition</p>
+        <h2 class="sec-h h-green" id="gt2">Wurzeln,<br>kein Rauschen.</h2>
+        <p class="sec-p p-green" id="gt3">Zurück zur Quelle. Der grüne KAERO steht für Reinheit ohne Abstriche — aktivierte Natur in ihrem besten Format.</p>
+        <div class="color-chips">
+          <div class="chip chip-green" id="gc1"><div class="chip-dot" style="background:var(--green)"></div>6mm</div>
+          <div class="chip chip-green" id="gc2"><div class="chip-dot" style="background:var(--green)"></div>7mm</div>
+          <div class="chip chip-green" id="gc3"><div class="chip-dot" style="background:var(--green)"></div>9mm</div>
+        </div>
+      </div>
+      <div class="color-img-wrap"><img src="green-50.avif" alt="KAERO Green" class="color-prod green-shadow" id="prod-green"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §5 COMBO DARK ══ -->
+<div class="pin-outer" id="po-combo">
+  <div class="pin-scene" id="sc-combo">
+    <div class="kcloud" style="width:320px;height:184px;top:5%;right:3%;opacity:.12">
+      <svg viewBox="0 0 320 184" fill="none"><path d="M38,130 Q16,130 14,106 Q12,82 34,80 Q32,58 56,56 Q58,34 84,38 Q94,16 126,22 Q146,6 170,18 Q194,8 212,22 Q238,14 248,40 Q270,36 272,62 Q290,68 286,96 Q300,104 296,130 Q292,158 266,160 Q238,178 208,166 Q178,182 146,170 Q112,184 82,168 Q50,176 30,152 Z" stroke="white" stroke-width="3" fill="rgba(255,255,255,.06)"/></svg>
+    </div>
+    <div class="color-inner" id="combo-inner-grid">
+      <div>
+        <p class="dk-tag" id="dkt">— Premium Qualität</p>
+        <h2 class="dk-h" id="dkh">Starter Box.<br>Premium Bag.<br>Du entscheidest.</h2>
+        <p class="dk-p" id="dkp">Zehn oder fünfzig — das Ergebnis bleibt gleich. Kompromisslose Filterwirkung in jedem Format.</p>
+        <ul class="flist">
+          <li id="fl1"><span class="fic">🥥</span><span>100% Kokosschalen-Aktivkohle</span></li>
+          <li id="fl2"><span class="fic">📏</span><span>Erhältlich in 6mm, 7mm und 9mm</span></li>
+          <li id="fl3"><span class="fic">🎨</span><span>Blue, Pink und Green — echt ikonisch</span></li>
+          <li id="fl4"><span class="fic">🏙️</span><span>Vertrieb aus Frankfurt am Main</span></li>
+        </ul>
+      </div>
+      <div id="combo-img-wrap">
+        <img src="blue-combo.webp" alt="Combo" id="combo-img">
+        <div class="cbadge" id="cba" style="top:-1.5rem;right:-1.5rem"><span class="big">10er</span>Starter Box</div>
+        <div class="cbadge" id="cbb" style="bottom:2rem;left:-1.5rem"><span class="big">50er</span>Premium Bag</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §6 FEATURES ══ -->
+<div class="pin-outer" id="po-feat">
+  <div class="pin-scene" id="sc-feat">
+    <div class="kcloud" style="width:420px;height:240px;top:-30px;right:-60px;opacity:.16">
+      <svg viewBox="0 0 420 240" fill="none"><path d="M52,170 Q22,170 20,140 Q18,110 46,108 Q44,80 72,78 Q74,50 108,54 Q122,26 162,32 Q186,12 220,26 Q250,12 278,28 Q312,18 328,52 Q360,46 364,80 Q392,88 388,120 Q408,132 402,164 Q396,196 364,198 Q332,220 294,208 Q260,228 222,214 Q186,230 148,214 Q108,226 78,206 Q44,214 24,184 Z" stroke="#0B2558" stroke-width="4" fill="rgba(196,228,255,.35)"/></svg>
+    </div>
+    <div id="feat-inner-wrap" style="width:100%;max-width:1300px;padding:0 7vw">
+      <div><p class="sec-tag tag-blue" id="ftag">— Das macht den Unterschied</p><h2 class="sec-h h-blue" id="fttl">Überlegen.<br>In jeder Hinsicht.</h2></div>
+      <div id="feat-grid">
+        <div class="fcard" id="fc1"><div class="ficon">🌿</div><h3>Natürliche Basis</h3><p>Nur Kokosschalen, kein Synthetik. Der Rohstoff macht den Geschmack.</p></div>
+        <div class="fcard" id="fc2"><div class="ficon">🔥</div><h3>Dreifach aktiviert</h3><p>Maximale Filterfläche durch drei Aktivierungsstufen — spürbar im ersten Zug.</p></div>
+        <div class="fcard" id="fc3"><div class="ficon">🎨</div><h3>Drei Farben</h3><p>Blue, Pink, Green — jede Farbe, ein eigenes Statement. Alle auf gleichem Niveau.</p></div>
+        <div class="fcard" id="fc4"><div class="ficon">📏</div><h3>Drei Durchmesser</h3><p>6mm, 7mm, 9mm — für jedes Papier, jede Hülse, jeden Anspruch.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ FILTER STAGE — 3-phase spin reveal ══ -->
+<div class="pin-outer" id="po-fstage">
+  <div class="pin-scene" id="sc-fstage">
+    <div class="kcloud" style="width:320px;height:187px;top:6%;right:4%;opacity:.11"><svg viewBox="0 0 300 175" fill="none"></svg></div>
+    <div class="kcloud" style="width:200px;height:117px;bottom:10%;left:5%;opacity:.09"><svg viewBox="0 0 300 175" fill="none"></svg></div>
+
+    <!-- BLUE phase -->
+    <div class="fstage-phase" id="fsp-blue">
+      <div class="fstage-right">
+        <div class="fsp-filter-wrap">
+          <div class="fsp-glow" style="background:var(--blue)"></div>
+          <div class="fsp-filter-3d" id="fspf-blue"><div class="f3d-top"></div><div class="f3d-side"></div><div class="f3d-band" style="background:var(--blue)"></div><div class="f3d-bottom"></div></div>
+        </div>
+      </div>
+      <div class="fstage-left">
+        <p class="fsp-tag" id="fspt-blue">— Light Blue · Der Klassiker</p>
+        <h2 class="fsp-h" id="fsph-blue">Der Filter,<br>dem alle vertrauen.</h2>
+        <div class="fsp-pills">
+          <div class="fsp-pill" id="fspp-b1">🥥 100% Kokosschalen-Aktivkohle</div>
+          <div class="fsp-pill" id="fspp-b2">📐 Erhältlich in 6mm · 7mm · 9mm</div>
+          <div class="fsp-pill" id="fspp-b3">📦 10er Starter Box &amp; 50er Premium Bag</div>
+          <div class="fsp-pill" id="fspp-b4">💎 Dreifach aktiviert — maximale Filterwirkung</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PINK phase -->
+    <div class="fstage-phase" id="fsp-pink" style="opacity:0">
+      <div class="fstage-right">
+        <div class="fsp-filter-wrap">
+          <div class="fsp-glow" style="background:var(--pink)"></div>
+          <div class="fsp-filter-3d" id="fspf-pink"><div class="f3d-top"></div><div class="f3d-side"></div><div class="f3d-band" style="background:var(--pink)"></div><div class="f3d-bottom"></div></div>
+        </div>
+      </div>
+      <div class="fstage-left">
+        <p class="fsp-tag" id="fspt-pink" style="color:var(--pink)">— Pink · Bold Edition</p>
+        <h2 class="fsp-h" id="fsph-pink" style="color:#8c0040">Für alle,<br>die auffallen wollen.</h2>
+        <div class="fsp-pills">
+          <div class="fsp-pill" id="fspp-p1">💗 Kräftiges Pink — ein echtes Statement</div>
+          <div class="fsp-pill" id="fspp-p2">📐 Erhältlich in 6mm · 7mm · 9mm</div>
+          <div class="fsp-pill" id="fspp-p3">📦 10er Starter Box &amp; 50er Premium Bag</div>
+          <div class="fsp-pill" id="fspp-p4">🏆 Qualität, die genauso überzeugt wie sie aussieht</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GREEN phase -->
+    <div class="fstage-phase" id="fsp-green" style="opacity:0">
+      <div class="fstage-right">
+        <div class="fsp-filter-wrap">
+          <div class="fsp-glow" style="background:var(--green)"></div>
+          <div class="fsp-filter-3d" id="fspf-green"><div class="f3d-top"></div><div class="f3d-side"></div><div class="f3d-band" style="background:var(--green)"></div><div class="f3d-bottom"></div></div>
+        </div>
+      </div>
+      <div class="fstage-left">
+        <p class="fsp-tag" id="fspt-green" style="color:var(--green)">— Green · Natural Edition</p>
+        <h2 class="fsp-h" id="fsph-green" style="color:#075c25">Reinheit,<br>die man schmeckt.</h2>
+        <div class="fsp-pills">
+          <div class="fsp-pill" id="fspp-g1">🌿 Natürliche Kokosschalen-Basis</div>
+          <div class="fsp-pill" id="fspp-g2">📐 Erhältlich in 6mm · 7mm · 9mm</div>
+          <div class="fsp-pill" id="fspp-g3">📦 10er Starter Box &amp; 50er Premium Bag</div>
+          <div class="fsp-pill" id="fspp-g4">🌱 Für den bewussten Genuss ohne Kompromiss</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ §7 SPLIT ══ -->
+<section id="split">
+  <div class="kcloud" style="position:absolute;width:280px;height:160px;top:8%;right:4%;opacity:.18">
+    <svg viewBox="0 0 280 160" fill="none"><path d="M34,112 Q14,112 13,90 Q12,68 32,66 Q30,46 52,44 Q54,24 78,28 Q88,10 115,18 Q135,4 158,14 Q180,6 196,20 Q218,16 224,38 Q244,40 242,62 Q256,68 252,88 Q248,108 228,110 Q206,124 180,116 Q156,130 128,120 Q100,134 76,122 Q50,130 36,114 Z" stroke="#0B2558" stroke-width="3" fill="rgba(196,228,255,.42)"/><ellipse cx="13" cy="90" rx="7" ry="7" fill="#0B2558" opacity=".5"/></svg>
+  </div>
+  <div id="split-img-wrap">
+    <img src="blue-50-dark.webp" alt="KAERO Detail" id="split-img">
+    <div class="sbdg sbdg1" id="sg1"><span class="big">50er</span>Premium Bag</div>
+    <div class="sbdg sbdg2" id="sg2"><span class="big">6·7·9</span>mm Größen</div>
+  </div>
+  <div id="split-txt">
+    <p class="sec-tag tag-blue" id="sptag">— So einfach geht's</p>
+    <h2 class="sec-h h-blue" id="spttl">Drei Schritte.<br>Null Kompromisse.</h2>
+    <p class="sec-p p-blue" id="spdsc">Von der Wahl bis zum Genuss — denkbar simpel.</p>
+    <div class="steps">
+      <div class="step" id="st1"><div class="snum">01</div><div class="sbh"><h4>Größe aussuchen</h4><p>6mm, 7mm oder 9mm — je nach Papier und Präferenz.</p></div></div>
+      <div class="step" id="st2"><div class="snum">02</div><div class="sbh"><h4>Einlegen</h4><p>Passt in alle Standarddrehhülsen und Zigarettenpapiere.</p></div></div>
+      <div class="step" id="st3"><div class="snum">03</div><div class="sbh"><h4>Erleben</h4><p>Dreifach aktivierte Kohle — Reinheit, die man schmeckt.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FILTER SHOWCASE ══ -->
+<section id="filters-showcase">
+  <div class="kcloud" style="position:absolute;width:300px;height:172px;top:6%;right:5%;opacity:.14">
+    <svg viewBox="0 0 300 172" fill="none"><path d="M36,122 Q14,122 13,98 Q12,74 34,72 Q32,50 56,48 Q58,26 86,30 Q98,10 128,16 Q150,2 174,14 Q198,4 214,20 Q238,14 242,40 Q262,44 260,70 Q276,78 272,104 Q268,130 244,132 Q218,148 188,138 Q160,154 130,142 Q98,156 72,140 Q44,148 28,126 Z" stroke="#0B2558" stroke-width="3" fill="rgba(196,228,255,.4)"/></svg>
+  </div>
+  <div class="inner">
+    <div class="fs-header" id="fs-hd">
+      <h2>Der Filter.<br>Aus der Nähe.</h2>
+      <p>Dicht gepresste Kokosschalen-Aktivkohle — jede Pore arbeitet. Drei Durchmesser, ein Anspruch.</p>
+    </div>
+    <div class="fs-layout">
+      <div><img src="blue-filters-loose.avif" alt="KAERO Einzelfilter" id="fs-main-img"></div>
+      <div class="fs-size-cards">
+        <div class="fsc" id="fsc1"><div class="fsc-dot s6">6</div><div class="fsc-info"><h4>6mm — Slim</h4><p>Der schlanke KAERO. Für engere Papiere und wer es kompakt mag.</p></div></div>
+        <div class="fsc" id="fsc2"><div class="fsc-dot s7">7</div><div class="fsc-info"><h4>7mm — Regular</h4><p>Unser meistverkaufter Durchmesser. Perfekte Balance zwischen Zug und Filterleistung.</p></div></div>
+        <div class="fsc" id="fsc3"><div class="fsc-dot s9">9</div><div class="fsc-info"><h4>9mm — Wide</h4><p>Breite Hülsen, volle Wirkung. Die stärkste Filterfläche im KAERO-Sortiment.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SHOP ══ -->
+<section id="shop">
+  <div class="kcloud" style="position:absolute;width:340px;height:195px;top:3%;right:3%;opacity:.13">
+    <svg viewBox="0 0 340 195" fill="none"><path d="M42,138 Q16,138 14,112 Q12,86 38,84 Q36,60 62,58 Q64,34 96,38 Q110,14 148,20 Q172,4 200,18 Q228,6 250,22 Q280,14 292,44 Q320,38 324,70 Q348,78 344,110 Q360,120 356,152 Q352,184 320,186 Q290,208 256,194 Q224,212 190,198 Q156,214 120,198 Q82,210 56,190 Q26,196 12,166 Z" stroke="#0B2558" stroke-width="3.5" fill="rgba(196,228,255,.32)"/></svg>
+  </div>
+  <div class="inner">
+    <div class="shop-hd" id="shop-hd">
+      <h2>Jetzt wählen.</h2>
+      <p>Farbe, Größe, Menge — alles in einem Schritt. Direkt in den Warenkorb.</p>
+    </div>
+    <div class="shop-grid">
+      <div class="shop-card" id="sc-card-blue" data-color="blue">
+        <img src="blue-50.webp" alt="KAERO Blue" class="sc-img bg-blue">
+        <div class="sc-body">
+          <div class="sc-badge b-blue">Light Blue</div>
+          <div class="sc-name">Blue Filter</div>
+          <div class="sc-desc">Der Klassiker — klar, sauber, ikonisch.</div>
+          <div class="sc-opts">
+            <div class="sc-opt-label">Größe</div>
+            <div class="sc-btns" data-key="size"><button class="sc-btn active b-blue" data-val="6">6mm</button><button class="sc-btn b-blue" data-val="7">7mm</button><button class="sc-btn b-blue" data-val="9">9mm</button></div>
+            <div class="sc-opt-label">Packung</div>
+            <div class="sc-btns" data-key="pack"><button class="sc-btn b-blue" data-val="10">10er Box</button><button class="sc-btn active b-blue" data-val="50">50er Bag</button></div>
+          </div>
+          <div class="sc-add-wrap"><div><div class="sc-price" id="price-blue">22,99 €</div><div class="sc-price-sub">zzgl. Versand</div></div><button class="sc-add-btn blue-btn" onclick="addToCart(this.closest('.shop-card'))">+ Warenkorb</button></div>
+        </div>
+      </div>
+      <div class="shop-card" id="sc-card-pink" data-color="pink">
+        <img src="pink-50.avif" alt="KAERO Pink" class="sc-img bg-pink">
+        <div class="sc-body">
+          <div class="sc-badge b-pink">Pink</div>
+          <div class="sc-name">Pink Filter</div>
+          <div class="sc-desc">Bold, direkt, unübersehbar — der mutige KAERO.</div>
+          <div class="sc-opts">
+            <div class="sc-opt-label">Größe</div>
+            <div class="sc-btns" data-key="size"><button class="sc-btn active b-pink" data-val="6">6mm</button><button class="sc-btn b-pink" data-val="7">7mm</button><button class="sc-btn b-pink" data-val="9">9mm</button></div>
+            <div class="sc-opt-label">Packung</div>
+            <div class="sc-btns" data-key="pack"><button class="sc-btn b-pink" data-val="10">10er Box</button><button class="sc-btn active b-pink" data-val="50">50er Bag</button></div>
+          </div>
+          <div class="sc-add-wrap"><div><div class="sc-price" id="price-pink">22,99 €</div><div class="sc-price-sub">zzgl. Versand</div></div><button class="sc-add-btn pink-btn" onclick="addToCart(this.closest('.shop-card'))">+ Warenkorb</button></div>
+        </div>
+      </div>
+      <div class="shop-card" id="sc-card-green" data-color="green">
+        <img src="green-50.avif" alt="KAERO Green" class="sc-img bg-green">
+        <div class="sc-body">
+          <div class="sc-badge b-green">Green</div>
+          <div class="sc-name">Green Filter</div>
+          <div class="sc-desc">Natürlich, rein, ohne Kompromiss — zurück zur Quelle.</div>
+          <div class="sc-opts">
+            <div class="sc-opt-label">Größe</div>
+            <div class="sc-btns" data-key="size"><button class="sc-btn active b-green" data-val="6">6mm</button><button class="sc-btn b-green" data-val="7">7mm</button><button class="sc-btn b-green" data-val="9">9mm</button></div>
+            <div class="sc-opt-label">Packung</div>
+            <div class="sc-btns" data-key="pack"><button class="sc-btn b-green" data-val="10">10er Box</button><button class="sc-btn active b-green" data-val="50">50er Bag</button></div>
+          </div>
+          <div class="sc-add-wrap"><div><div class="sc-price" id="price-green">22,99 €</div><div class="sc-price-sub">zzgl. Versand</div></div><button class="sc-add-btn green-btn" onclick="addToCart(this.closest('.shop-card'))">+ Warenkorb</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="tkbar lt"><div class="tkt rev"><span>KAERO SMOKE</span><span class="hi">✦</span><span>Activated Carbon</span><span class="hi">✦</span><span>Frankfurt am Main</span><span class="hi">✦</span><span>6mm · 7mm · 9mm</span><span class="hi">✦</span><span>KAERO SMOKE</span><span class="hi">✦</span><span>Activated Carbon</span><span class="hi">✦</span><span>Frankfurt am Main</span><span class="hi">✦</span><span>6mm · 7mm · 9mm</span><span class="hi">✦</span></div></div>
+
+<!-- ══ §9 MANIFESTO ══ -->
+<div class="pin-outer" id="po-mani">
+  <div class="pin-scene" id="sc-mani">
+    <div class="kcloud" style="width:300px;height:172px;top:6%;right:4%;opacity:.08">
+      <svg viewBox="0 0 300 172" fill="none"><path d="M36,122 Q14,122 13,98 Q12,74 34,72 Q32,50 56,48 Q58,26 86,30 Q98,10 128,16 Q150,2 174,14 Q198,4 214,20 Q238,14 242,40 Q262,44 260,70 Q276,78 272,104 Q268,130 244,132 Q218,148 188,138 Q160,154 130,142 Q98,156 72,140 Q44,148 28,126 Z" stroke="white" stroke-width="3" fill="rgba(255,255,255,.05)"/></svg>
+    </div>
+    <div id="mani-inner">
+      <span class="mwrap"><span class="mline ml-sm" id="ml0">Frankfurt, 2025</span></span>
+      <span class="mwrap"><span class="mline" id="ml1">Wir filtern</span></span>
+      <span class="mwrap"><span class="mline ml-ac" id="ml2">den Alltag.</span></span>
+      <span class="mwrap"><span class="mline" id="ml3">Wir filtern</span></span>
+      <span class="mwrap"><span class="mline ml-ac" id="ml4">das Gewöhnliche.</span></span>
+      <span class="mwrap" style="margin-top:2rem"><span class="mline ml-sm" id="ml5">Alles — außer deinen Stil.</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §10 CTA ══ -->
+<section id="cta">
+  <div class="kcloud" style="position:absolute;width:440px;height:252px;top:-10px;left:50%;transform:translateX(-50%);opacity:.14">
+    <svg viewBox="0 0 440 252" fill="none"><path d="M54,178 Q22,178 20,148 Q18,118 48,116 Q46,88 76,86 Q78,58 114,62 Q128,32 170,38 Q196,16 228,30 Q258,14 284,30 Q320,20 336,56 Q368,48 374,82 Q406,90 402,124 Q422,134 418,170 Q414,206 382,208 Q350,230 312,218 Q278,238 240,224 Q204,242 164,226 Q122,240 90,220 Q54,228 34,200 Z" stroke="#0B2558" stroke-width="4" fill="rgba(196,228,255,.28)"/><ellipse cx="20" cy="148" rx="10" ry="10" fill="#0B2558" opacity=".45"/><ellipse cx="418" cy="170" rx="9" ry="9" fill="#0B2558" opacity=".38"/></svg>
+  </div>
+  <div id="cta-hd">
+    <h2>Dein Filter.<br>Dein Statement.</h2>
+    <p>Drei Farben. Drei Größen. Jetzt bestellen und den Unterschied erleben.</p>
+  </div>
+  <div id="pack-row">
+    <div class="pk" id="pk1"><img src="blue-50.webp" alt="Blue 50er" class="pk-img bg-blue"><div class="pk-body"><div class="pk-t t-blue">Light Blue</div><div class="pk-n">50er Bag</div><div class="pk-d">6mm · 7mm · 9mm</div></div></div>
+    <div class="pk" id="pk2"><img src="pink-50.avif" alt="Pink 50er" class="pk-img bg-pink"><div class="pk-body"><div class="pk-t t-pink">Pink</div><div class="pk-n">50er Bag</div><div class="pk-d">6mm · 7mm · 9mm</div></div></div>
+    <div class="pk" id="pk3"><img src="green-50.avif" alt="Green 50er" class="pk-img bg-green"><div class="pk-body"><div class="pk-t t-green">Green</div><div class="pk-n">50er Bag</div><div class="pk-d">6mm · 7mm · 9mm</div></div></div>
+    <div class="pk" id="pk4"><img src="blue-combo.webp" alt="Combo" class="pk-img bg-blue"><div class="pk-body"><div class="pk-t t-blue">Bundle</div><div class="pk-n">10er + 50er</div><div class="pk-d">Kombi-Paket</div></div></div>
+  </div>
+  <a href="#shop" id="cta-btn">Jetzt bestellen</a>
+</section>
+
+<footer>
+  <div class="flogo"><img src="logo-sticker.png" alt="KAERO SMOKE"></div>
+  <div class="flinks"><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">Instagram</a></div>
+  <div class="fcopy">© 2025 Kaero Smoke · Frankfurt am Main</div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ════════════════════════════════════
+   WIND-CLOUD SHAPE — replace all .kcloud SVGs
+   with the flowing scroll-cloud from the logo
+════════════════════════════════════ */
+document.querySelectorAll('.kcloud').forEach(function(div){
+  div.innerHTML='<img src="cloud-scroll.svg" alt="">';
+});
+
+/* ── nav ── */
+gsap.to('#nav',{opacity:1,duration:.8,delay:.3,ease:'power2.out'});
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement.scrollHeight-innerHeight;
+  document.getElementById('prog').style.width=(scrollY/h*100)+'%';
+  document.getElementById('nav').classList.toggle('solid',scrollY>innerHeight*.5);
+},{passive:true});
+
+/* ════════════════════════════════════
+   §0 LOGO INTRO — auto-play on swipe
+════════════════════════════════════ */
+document.getElementById('po-intro').style.height=(innerHeight+320)+'px';
+const introTL=gsap.timeline({paused:true});
+introTL
+  .to('#intro-tag',   {opacity:1,duration:.35,ease:'power2.out'})
+  .to('#intro-scroll',{opacity:1,duration:.25},'-=.05')
+  .to('#intro-scroll',{opacity:0,duration:.2},'+=.4')
+  .to('#intro-logo',{scale:5,opacity:0,filter:'blur(22px) brightness(1.8)',duration:1.1,ease:'power1.inOut'},'+=.1')
+  .to('#intro-tag',{opacity:0,duration:.25},'-=.75')
+  .to('#sc-intro',{backgroundColor:'#ffffff',duration:.3},'-=.4');
+ScrollTrigger.create({
+  trigger:'#po-intro',start:'top top',end:'bottom bottom',pin:'#sc-intro',
+  onEnter:()=>introTL.restart(),
+  onLeaveBack:()=>{introTL.progress(0);introTL.pause();}
+});
+
+/* Float clouds in intro */
+document.querySelectorAll('#sc-intro .kcloud').forEach((el,i)=>{
+  gsap.to(el,{y:'-=16',rotation:i%2?1.5:-1.5,duration:3.5+i*.5,repeat:-1,yoyo:true,ease:'sine.inOut',delay:i*.5});
+});
+
+/* ════════════════════════════════════
+   §1 HERO entrance
+════════════════════════════════════ */
+const htl=gsap.timeline({delay:.35});
+htl
+  .to('#ey',   {opacity:1,y:0,duration:.7,ease:'power3.out'})
+  .to(['#w1','#w2','#w3'],{y:0,duration:.9,stagger:.1,ease:'power4.out'},'-=.3')
+  .to('#hsub', {opacity:1,y:0,duration:.75,ease:'power2.out'},'-=.4')
+  .to('#hbtns',{opacity:1,y:0,duration:.65,ease:'power2.out'},'-=.5')
+  .to('#hprod',{opacity:1,y:0,scale:1,rotate:0,duration:1.15,ease:'power3.out'},'-=.8')
+  .to('#pp1',  {opacity:1,duration:.5,ease:'back.out(1.6)'},'-=.35')
+  .to('#pp2',  {opacity:1,duration:.5,ease:'back.out(1.6)'},'-=.22')
+  .to('#pp3',  {opacity:1,duration:.5,ease:'back.out(1.6)'},'-=.22')
+  .to('#hint', {opacity:1,duration:.7},'+=.25');
+
+/* Hero: subtle product parallax + hint fade */
+gsap.to('#hprod',{y:-60,rotate:-3,ease:'none',scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:1.2}});
+gsap.to('#hint', {opacity:0,ease:'none',scrollTrigger:{trigger:'#hero',start:'5% top',end:'25% top',scrub:1}});
+
+/* ════════════════════════════════════
+   COLOR SECTION HELPER — auto-play on swipe
+════════════════════════════════════ */
+function buildColorPin(outerID,sceneID,tags,imgID,chips,bigNum){
+  document.getElementById(outerID).style.height=(innerHeight+380)+'px';
+  const tl=gsap.timeline({paused:true});
+  tl.to('#'+tags[0],{opacity:1,y:0,duration:.38,ease:'power2.out'})
+    .to('#'+tags[1],{opacity:1,y:0,duration:.55,ease:'power2.out'},'-=.18')
+    .to('#'+tags[2],{opacity:1,y:0,duration:.45,ease:'power2.out'},'-=.28')
+    .to('#'+bigNum, {opacity:1,duration:.45},'-=.35')
+    .to('#'+imgID,  {opacity:1,x:0,rotate:0,scale:1,duration:.85,ease:'power2.out'},'-=.18')
+    .to(chips.map(c=>'#'+c),{opacity:1,y:0,duration:.38,stagger:.11},'+=.08')
+    .to('#'+imgID,{y:-12,duration:.5},'+=.15')
+    .to('#'+imgID,{y:6, duration:.38},'-=.08')
+    .to('#'+imgID,{y:0, duration:.3});
+  ScrollTrigger.create({
+    trigger:'#'+outerID,start:'top top',end:'bottom bottom',pin:'#'+sceneID,
+    onEnter:()=>tl.restart(),
+    onLeaveBack:()=>{tl.progress(0);tl.pause();}
+  });
+}
+buildColorPin('po-blue','sc-blue',['bt1','bt2','bt3'],'prod-blue',['bc1','bc2','bc3'],'bn-blue');
+buildColorPin('po-pink','sc-pink',['pt1','pt2','pt3'],'prod-pink',['pc1','pc2','pc3'],'bn-pink');
+buildColorPin('po-green','sc-green',['gt1','gt2','gt3'],'prod-green',['gc1','gc2','gc3'],'bn-green');
+
+/* Float clouds in color sections */
+document.querySelectorAll('.pin-scene .kcloud').forEach((el,i)=>{
+  gsap.to(el,{y:'+=20',rotation:i%2?2.5:-2.5,duration:4+i*.4,repeat:-1,yoyo:true,ease:'sine.inOut',delay:i*.55});
+});
+
+/* ── §5 COMBO — auto-play on swipe ── */
+document.getElementById('po-combo').style.height=(innerHeight+380)+'px';
+const comboTL=gsap.timeline({paused:true});
+comboTL
+  .to('#dkt',{opacity:1,y:0,duration:.35,ease:'power2.out'})
+  .to('#dkh',{opacity:1,y:0,duration:.55,ease:'power2.out'},'-=.18')
+  .to('#dkp',{opacity:1,y:0,duration:.45,ease:'power2.out'},'-=.28')
+  .to('#combo-img',{opacity:1,x:0,scale:1,duration:.9,ease:'power2.out'},'-=.18')
+  .to(['#fl1','#fl2','#fl3','#fl4'],{opacity:1,x:0,duration:.38,stagger:.11},'+=.08')
+  .to('#cba',{opacity:1,scale:1,y:0,duration:.42,ease:'back.out(1.6)'},'+=.08')
+  .to('#cbb',{opacity:1,scale:1,y:0,duration:.42,ease:'back.out(1.6)'},'-=.22')
+  .to('#combo-img',{rotate:3,duration:.5},'+=.15')
+  .to('#combo-img',{rotate:-2,duration:.38})
+  .to('#combo-img',{rotate:0,duration:.3});
+ScrollTrigger.create({
+  trigger:'#po-combo',start:'top top',end:'bottom bottom',pin:'#sc-combo',
+  onEnter:()=>comboTL.restart(),
+  onLeaveBack:()=>{comboTL.progress(0);comboTL.pause();}
+});
+
+/* ── §6 FEATURES — auto-play on swipe ── */
+document.getElementById('po-feat').style.height=(innerHeight+380)+'px';
+const featTL=gsap.timeline({paused:true});
+featTL
+  .to('#ftag',{opacity:1,y:0,duration:.35,ease:'power2.out'})
+  .to('#fttl',{opacity:1,y:0,duration:.55,ease:'power2.out'},'-=.18')
+  .to('#fc1',{opacity:1,y:0,scale:1,duration:.58,ease:'back.out(1.4)'},'+=.08')
+  .to('#fc2',{opacity:1,y:0,scale:1,duration:.58,ease:'back.out(1.4)'},'-=.18')
+  .to('#fc3',{opacity:1,y:0,scale:1,duration:.58,ease:'back.out(1.4)'},'-=.18')
+  .to('#fc4',{opacity:1,y:0,scale:1,duration:.58,ease:'back.out(1.4)'},'-=.18')
+  .to(['#fc1','#fc2','#fc3','#fc4'],{y:-10,duration:.42,stagger:.07},'+=.15');
+ScrollTrigger.create({
+  trigger:'#po-feat',start:'top top',end:'bottom bottom',pin:'#sc-feat',
+  onEnter:()=>featTL.restart(),
+  onLeaveBack:()=>{featTL.progress(0);featTL.pause();}
+});
+
+
+/* ════════════════════════════════════
+   FILTER STAGE — 3-phase scroll-driven spin
+   Each filter rotates as you scroll,
+   info pills reveal per color
+════════════════════════════════════ */
+document.getElementById('po-fstage').style.height=(innerHeight+520)+'px';
+/* ── BUILD CSS 3D CYLINDERS (real geometry) ── */
+(function(){
+  /* Filter proportions from product: chunky, ~2.8:1 H:D ratio */
+  var N=28,         /* faces — enough for smooth silhouette */
+      R=68,         /* radius px → diameter 136px */
+      H=190;        /* height px */
+  var fW = 2*R*Math.sin(Math.PI/N) + 0.6;   /* face width (tiny gap fill) */
+  var fZ = R*Math.cos(Math.PI/N);            /* face translateZ */
+
+  var cfgs=[
+    {id:'fspf-blue',  base:'#2060c8', vein:'rgba(200,228,255,0.72)', vein2:'rgba(255,255,255,0.52)'},
+    {id:'fspf-pink',  base:'#cc1478', vein:'rgba(255,200,232,0.72)', vein2:'rgba(255,255,255,0.52)'},
+    {id:'fspf-green', base:'#1e8545', vein:'rgba(180,248,210,0.72)', vein2:'rgba(255,255,255,0.52)'}
+  ];
+
+  cfgs.forEach(function(c){
+    var el=document.getElementById(c.id);
+    if(!el)return;
+    el.innerHTML='';
+    /* Cylinder wrapper — preserve-3d, no perspective here, parent has it */
+    el.style.cssText=
+      'width:'+(R*2)+'px;height:'+H+'px;'+
+      'position:relative;'+
+      'transform-style:preserve-3d;'+
+      'opacity:0;will-change:transform;';
+
+    /* ── SIDE FACES ── */
+    for(var i=0;i<N;i++){
+      var ang = (i/N)*360;
+      var rad = (i/N)*Math.PI*2;
+      /* Cosine lighting: front bright, sides darker, back very dark */
+      var brt = 0.46 + 0.64*Math.cos(rad - 0.25);
+      brt = Math.max(0.18, Math.min(1.1, brt));
+
+      /* Marble: offset each face's gradient so swirls flow continuously around cylinder */
+      var bgOffX = -Math.round(i * fW);
+      /* Two soft diagonal highlight bands — no grid, just organic swirls */
+      var bg =
+        'linear-gradient(-48deg,'+
+          'transparent 0%,'+
+          c.vein2+' 14%,'+
+          c.vein+' 22%,'+
+          'transparent 30%,'+
+          'transparent 48%,'+
+          c.vein+' 58%,'+
+          c.vein2+' 64%,'+
+          'transparent 72%,'+
+          'transparent 100%'+
+        '),'+c.base;
+
+      var f=document.createElement('div');
+      f.style.cssText=
+        'position:absolute;'+
+        'width:'+fW.toFixed(1)+'px;height:'+H+'px;'+
+        'left:'+(R - fW/2).toFixed(1)+'px;top:0;'+
+        'transform:rotateY('+ang+'deg) translateZ('+fZ.toFixed(1)+'px);'+
+        'background:'+bg+';'+
+        'background-size:'+(N*fW).toFixed(0)+'px 100%;'+
+        'background-position:'+bgOffX+'px 0;'+
+        'filter:brightness('+brt.toFixed(2)+');'+
+        'backface-visibility:visible;overflow:hidden;';
+      el.appendChild(f);
+    }
+
+    /* ── KAERO LABEL — single plane at 0°, lives on the front face surface ── */
+    var lbl=document.createElement('div');
+    lbl.style.cssText=
+      'position:absolute;'+
+      'width:'+(R*2)+'px;left:0;'+
+      'top:'+(H*0.27)+'px;'+
+      'transform:rotateY(0deg) translateZ('+(fZ+0.5).toFixed(1)+'px);'+
+      'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;'+
+      'pointer-events:none;backface-visibility:visible;';
+    /* Small K badge circle */
+    var badge=document.createElement('div');
+    badge.style.cssText=
+      'width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,0.9);'+
+      'display:flex;align-items:center;justify-content:center;'+
+      'font-family:Fraunces,serif;font-weight:900;font-style:italic;font-size:17px;'+
+      'color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5);margin-bottom:2px;';
+    badge.textContent='K';
+    /* KAERO wordmark */
+    var word=document.createElement('div');
+    word.style.cssText=
+      'font-family:Fraunces,serif;font-weight:900;font-style:italic;'+
+      'font-size:26px;color:#fff;letter-spacing:.04em;line-height:1;'+
+      'text-shadow:0 1px 8px rgba(0,0,0,.6);';
+    word.textContent='KAERO';
+    lbl.appendChild(badge);
+    lbl.appendChild(word);
+    el.appendChild(lbl);
+
+    /* ── TOP CAP — concrete grey with channel holes ── */
+    var capT=document.createElement('div');
+    capT.style.cssText=
+      'position:absolute;'+
+      'width:'+(R*2)+'px;height:'+(R*2)+'px;'+
+      'left:0;top:'+(-R)+'px;'+
+      'border-radius:50%;overflow:hidden;'+
+      'transform:rotateX(90deg);'+
+      'background:radial-gradient(ellipse at 45% 38%,#d8d8d8 0%,#b8b8b8 38%,#909090 72%,#686868 100%);'+
+      'backface-visibility:visible;';
+    /* Holes: 1 center + 6 middle ring + 12 outer ring — matches actual activated carbon filter cross-section */
+    var rings=[[0,1,8],[18,6,6.5],[34,12,4.5]]; /* [radius, count, holeR] */
+    rings.forEach(function(ring){
+      var rr=ring[0], rc=ring[1], hr=ring[2];
+      for(var j=0;j<rc;j++){
+        var hx=Math.round(rr*Math.cos(j*(2*Math.PI/rc)));
+        var hy=Math.round(rr*Math.sin(j*(2*Math.PI/rc)));
+        var h=document.createElement('div');
+        h.style.cssText=
+          'position:absolute;border-radius:50%;'+
+          'width:'+(hr*2).toFixed(0)+'px;height:'+(hr*2).toFixed(0)+'px;'+
+          'left:'+(R-hr+hx).toFixed(0)+'px;'+
+          'top:'+(R-hr+hy).toFixed(0)+'px;'+
+          'background:#222;box-shadow:inset 0 2px 6px #000,inset 0 0 3px rgba(0,0,0,.9);';
+        capT.appendChild(h);
+      }
+    });
+    el.appendChild(capT);
+
+    /* ── BOTTOM CAP ── */
+    var capB=document.createElement('div');
+    capB.style.cssText=
+      'position:absolute;'+
+      'width:'+(R*2)+'px;height:'+(R*2)+'px;'+
+      'left:0;top:'+(H-R)+'px;'+
+      'border-radius:50%;'+
+      'transform:rotateX(-90deg);'+
+      'background:radial-gradient(ellipse at 50% 62%,#7a7a7a 0%,#4e4e4e 52%,#2a2a2a 100%);'+
+      'backface-visibility:visible;';
+    el.appendChild(capB);
+  });
+})();
+
+/* initial states */
+gsap.set(['#fsp-pink','#fsp-green'],{opacity:0,y:22});
+
+const fsTagTL=gsap.timeline({paused:true});
+ScrollTrigger.create({
+  trigger:'#po-fstage',start:'top top',end:'bottom bottom',pin:'#sc-fstage',
+  onEnter:()=>fsTagTL.restart(),
+  onLeaveBack:()=>{fsTagTL.progress(0);fsTagTL.pause();}
+});
+
+/* — BLUE — */
+fsTagTL
+  .to('#fspt-blue',{opacity:1,y:0,duration:.28})
+  .to('#fsph-blue',{opacity:1,y:0,duration:.42},'-=.15')
+  .fromTo('#fspf-blue',{rotateX:-28,rotateY:0,y:60,opacity:0},{rotateX:-28,rotateY:360,y:0,opacity:1,duration:1.6,ease:'none'},'-=.2')
+  .to('#fspp-b1',{opacity:1,x:0,duration:.26},'-=1.15')
+  .to('#fspp-b2',{opacity:1,x:0,duration:.26},'-=.88')
+  .to('#fspp-b3',{opacity:1,x:0,duration:.26},'-=.6')
+  .to('#fspp-b4',{opacity:1,x:0,duration:.26},'-=.32')
+
+/* Blue → Pink */
+  .to('#fsp-blue',{opacity:0,y:-45,duration:.38},'+=.18')
+  .fromTo('#fsp-pink',{y:22,opacity:0},{y:0,opacity:1,duration:.38},'-=.18')
+
+/* — PINK — */
+  .to('#fspt-pink',{opacity:1,y:0,duration:.28})
+  .to('#fsph-pink',{opacity:1,y:0,duration:.42},'-=.15')
+  .fromTo('#fspf-pink',{rotateX:-28,rotateY:0,y:60,opacity:0},{rotateX:-28,rotateY:360,y:0,opacity:1,duration:1.6,ease:'none'},'-=.2')
+  .to('#fspp-p1',{opacity:1,x:0,duration:.26},'-=1.15')
+  .to('#fspp-p2',{opacity:1,x:0,duration:.26},'-=.88')
+  .to('#fspp-p3',{opacity:1,x:0,duration:.26},'-=.6')
+  .to('#fspp-p4',{opacity:1,x:0,duration:.26},'-=.32')
+
+/* Pink → Green */
+  .to('#fsp-pink',{opacity:0,y:-45,duration:.38},'+=.18')
+  .fromTo('#fsp-green',{y:22,opacity:0},{y:0,opacity:1,duration:.38},'-=.18')
+
+/* — GREEN — */
+  .to('#fspt-green',{opacity:1,y:0,duration:.28})
+  .to('#fsph-green',{opacity:1,y:0,duration:.42},'-=.15')
+  .fromTo('#fspf-green',{rotateX:-28,rotateY:0,y:60,opacity:0},{rotateX:-28,rotateY:360,y:0,opacity:1,duration:1.6,ease:'none'},'-=.2')
+  .to('#fspp-g1',{opacity:1,x:0,duration:.26},'-=1.15')
+  .to('#fspp-g2',{opacity:1,x:0,duration:.26},'-=.88')
+  .to('#fspp-g3',{opacity:1,x:0,duration:.26},'-=.6')
+  .to('#fspp-g4',{opacity:1,x:0,duration:.26},'-=.32');
+
+/* ── §7 SPLIT ── */
+gsap.fromTo('#split-img',{y:90},{y:-90,ease:'none',scrollTrigger:{trigger:'#split',start:'top bottom',end:'bottom top',scrub:1.6}});
+const spT={trigger:'#split',start:'top 78%',toggleActions:'play none none none'};
+gsap.to('#split-img-wrap',{opacity:1,x:0,duration:1.1,ease:'power3.out',scrollTrigger:spT});
+gsap.to('#sg1',{opacity:1,scale:1,duration:.55,delay:.8,ease:'back.out(1.6)',scrollTrigger:spT});
+gsap.to('#sg2',{opacity:1,scale:1,duration:.55,delay:1,ease:'back.out(1.6)',scrollTrigger:spT});
+gsap.to('#split-txt',{opacity:1,x:0,duration:1.1,ease:'power3.out',delay:.2,scrollTrigger:spT});
+['#sptag','#spttl','#spdsc'].forEach((id,i)=>gsap.to(id,{opacity:1,y:0,duration:.65,delay:i*.14,scrollTrigger:{trigger:'#split-txt',start:'top 80%',toggleActions:'play none none none'}}));
+['#st1','#st2','#st3'].forEach((id,i)=>gsap.to(id,{opacity:1,x:0,duration:.65,delay:.3+i*.16,ease:'power2.out',scrollTrigger:{trigger:'.steps',start:'top 82%',toggleActions:'play none none none'}}));
+
+/* ── Filter showcase ── */
+const fsT={trigger:'#filters-showcase',start:'top 75%',toggleActions:'play none none none'};
+gsap.to('#fs-hd',{opacity:1,y:0,duration:.9,ease:'power3.out',scrollTrigger:fsT});
+gsap.to('#fs-main-img',{opacity:1,x:0,duration:1.1,ease:'power3.out',delay:.2,scrollTrigger:fsT});
+['#fsc1','#fsc2','#fsc3'].forEach((id,i)=>gsap.to(id,{opacity:1,x:0,duration:.75,delay:.3+i*.18,ease:'power2.out',scrollTrigger:fsT}));
+
+/* ── Shop ── */
+gsap.to('#shop-hd',{opacity:1,y:0,duration:.9,ease:'power3.out',scrollTrigger:{trigger:'#shop',start:'top 80%',toggleActions:'play none none none'}});
+['#sc-card-blue','#sc-card-pink','#sc-card-green'].forEach((id,i)=>gsap.to(id,{opacity:1,y:0,scale:1,duration:.85,delay:i*.15,ease:'power3.out',scrollTrigger:{trigger:'.shop-grid',start:'top 82%',toggleActions:'play none none none'}}));
+
+/* ── Manifesto — auto-play on swipe ── */
+document.getElementById('po-mani').style.height=(innerHeight+380)+'px';
+const maniTL=gsap.timeline({paused:true});
+['#ml0','#ml1','#ml2','#ml3','#ml4','#ml5'].forEach((id,i)=>maniTL.to(id,{y:0,rotate:0,duration:.42,ease:'power2.out'},(i===0?0:'-=.08')));
+ScrollTrigger.create({
+  trigger:'#po-mani',start:'top top',end:'bottom bottom',pin:'#sc-mani',
+  onEnter:()=>maniTL.restart(),
+  onLeaveBack:()=>{maniTL.progress(0);maniTL.pause();}
+});
+document.querySelectorAll('#sc-mani .kcloud').forEach((el,i)=>{
+  gsap.to(el,{y:'+=18',duration:4+i,repeat:-1,yoyo:true,ease:'sine.inOut',delay:i*.7});
+  gsap.to(el,{y:i%2?-60:50,ease:'none',scrollTrigger:{trigger:'#po-mani',start:'top bottom',end:'bottom top',scrub:true}});
+});
+
+/* ── CTA ── */
+gsap.to('#cta-hd',{opacity:1,y:0,duration:.9,ease:'power3.out',scrollTrigger:{trigger:'#cta',start:'top 80%',toggleActions:'play none none none'}});
+['#pk1','#pk2','#pk3','#pk4'].forEach((id,i)=>gsap.to(id,{opacity:1,y:0,scale:1,duration:.75,delay:i*.13,ease:'power3.out',scrollTrigger:{trigger:'#pack-row',start:'top 82%',toggleActions:'play none none none'}}));
+gsap.to('#cta-btn',{opacity:1,y:0,duration:.75,delay:.45,scrollTrigger:{trigger:'#pack-row',start:'top 80%',toggleActions:'play none none none'}});
+
+/* ════════════════════════════════════
+   ROLLING ZOOM SCROLL ENTRANCE
+   Each non-pinned section rolls in from above
+   via scrub-linked rotateX + scale
+════════════════════════════════════ */
+['#split','#filters-showcase','#shop','#cta'].forEach(function(sel){
+  gsap.fromTo(sel,
+    {rotateX:16,scale:0.93,transformOrigin:'top center',transformPerspective:1200},
+    {rotateX:0,scale:1,transformOrigin:'top center',transformPerspective:1200,ease:'none',
+     scrollTrigger:{trigger:sel,start:'top 95%',end:'top 10%',scrub:1.6}}
+  );
+});
+
+/* Float + parallax for scattered clouds */
+document.querySelectorAll('#split .kcloud, #filters-showcase .kcloud, #shop .kcloud, #cta .kcloud').forEach((el,i)=>{
+  gsap.to(el,{y:'+=16',rotation:i%2?2:-2,duration:3.8+i*.4,repeat:-1,yoyo:true,ease:'sine.inOut',delay:i*.5});
+  gsap.to(el,{y:-65,ease:'none',scrollTrigger:{trigger:el.closest('section')||el.parentElement,start:'top bottom',end:'bottom top',scrub:true}});
+});
+
+/* ── resize ── */
+window.addEventListener('resize',()=>{
+  document.getElementById('po-intro').style.height=(innerHeight+320)+'px';
+  ['po-blue','po-pink','po-green'].forEach(id=>document.getElementById(id).style.height=(innerHeight+380)+'px');
+  document.getElementById('po-combo').style.height=(innerHeight+380)+'px';
+  document.getElementById('po-feat').style.height=(innerHeight+380)+'px';
+  document.getElementById('po-fstage').style.height=(innerHeight+520)+'px';
+  document.getElementById('po-mani').style.height=(innerHeight+380)+'px';
+  ScrollTrigger.refresh();
+});
+
+/* ════════════════════════════════════
+   SHOP — option toggles
+════════════════════════════════════ */
+const PRICES={'10':8.99,'50':22.99};
+document.querySelectorAll('.sc-btns').forEach(group=>{
+  group.querySelectorAll('.sc-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      group.querySelectorAll('.sc-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      if(group.dataset.key==='pack'){
+        const card=group.closest('.shop-card');
+        const color=card.dataset.color;
+        const priceEl=document.getElementById('price-'+color);
+        if(priceEl) priceEl.textContent=PRICES[btn.dataset.val].toFixed(2).replace('.',',')+' €';
+      }
+    });
+  });
+});
+
+/* ════════════════════════════════════
+   CART
+════════════════════════════════════ */
+const Cart={
+  items:[],
+  open(){document.getElementById('cart-overlay').classList.add('active');document.getElementById('cart-drawer').classList.add('open');document.body.style.overflow='hidden'},
+  close(){document.getElementById('cart-overlay').classList.remove('active');document.getElementById('cart-drawer').classList.remove('open');document.body.style.overflow=''},
+  add(item){
+    const key=`${item.color}-${item.size}-${item.pack}`;
+    const ex=this.items.find(i=>i.key===key);
+    if(ex)ex.qty++;else this.items.push({...item,key,qty:1});
+    this.render();this.open();
+  },
+  remove(key){this.items=this.items.filter(i=>i.key!==key);this.render()},
+  updateQty(key,delta){
+    const item=this.items.find(i=>i.key===key);
+    if(!item)return;
+    item.qty=Math.max(0,item.qty+delta);
+    if(item.qty===0)this.remove(key);else this.render();
+  },
+  total(){return this.items.reduce((s,i)=>s+(PRICES[i.pack]||0)*i.qty,0)},
+  render(){
+    const count=this.items.reduce((s,i)=>s+i.qty,0);
+    const badge=document.getElementById('cart-count');
+    badge.textContent=count;badge.style.display=count>0?'flex':'none';
+    const wrap=document.getElementById('cart-items');
+    const empty=document.getElementById('cart-empty');
+    const footer=document.getElementById('cart-footer');
+    const names={blue:'Light Blue',pink:'Pink',green:'Green'};
+    if(!this.items.length){empty.style.display='flex';wrap.innerHTML='';footer.style.display='none';return}
+    empty.style.display='none';footer.style.display='block';
+    wrap.innerHTML=this.items.map(item=>`<div class="cart-item">
+      <div class="ci-img ${item.color}"></div>
+      <div class="ci-info"><div class="ci-name">${names[item.color]}</div><div class="ci-sub">${item.size}mm · ${item.pack}er</div><div class="ci-price">${((PRICES[item.pack]||0)*item.qty).toFixed(2).replace('.',',')} €</div></div>
+      <div class="ci-qty"><button onclick="Cart.updateQty('${item.key}',-1)">−</button><span>${item.qty}</span><button onclick="Cart.updateQty('${item.key}',1)">+</button></div>
+      <button class="ci-rm" onclick="Cart.remove('${item.key}')">✕</button>
+    </div>`).join('');
+    document.getElementById('cart-total').textContent=this.total().toFixed(2).replace('.',',')+' €';
+  }
+};
+function addToCart(card){
+  Cart.add({
+    color:card.dataset.color,
+    size:card.querySelector('.sc-btns[data-key="size"] .sc-btn.active')?.dataset.val||'6',
+    pack:card.querySelector('.sc-btns[data-key="pack"] .sc-btn.active')?.dataset.val||'50'
+  });
+}
+document.getElementById('cart-close').addEventListener('click',()=>Cart.close());
+document.getElementById('cart-overlay').addEventListener('click',()=>Cart.close());
+Cart.render();
+
+/* ── HAMBURGER MOBILE MENU ── */
+function toggleMobileNav(){
+  const m=document.getElementById('mobile-menu');
+  const h=document.getElementById('hamburger');
+  m.classList.toggle('open');
+  h.classList.toggle('active');
+  document.body.style.overflow=m.classList.contains('open')?'hidden':'';
+}
+function closeMobileNav(){
+  document.getElementById('mobile-menu').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('active');
+  document.body.style.overflow='';
+}
+
+/* Show mobile cart button on small screens */
+(function(){
+  const mobileCartBtn=document.getElementById('cart-nav-btn-mobile');
+  const mobileCartCount=document.getElementById('cart-count-mobile');
+  function syncMobileCart(){
+    const count=Cart.items.reduce((s,i)=>s+i.qty,0);
+    mobileCartCount.textContent=count;
+    mobileCartCount.style.display=count>0?'flex':'none';
+  }
+  if(window.innerWidth<=760){
+    mobileCartBtn.style.display='flex';
+  }
+  window.addEventListener('resize',()=>{
+    mobileCartBtn.style.display=window.innerWidth<=760?'flex':'none';
+  });
+  const origRender=Cart.render.bind(Cart);
+  Cart.render=function(){origRender();syncMobileCart();};
+})();
+</script>
+</body>
+</html>
