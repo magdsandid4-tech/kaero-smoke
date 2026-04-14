@@ -371,14 +371,16 @@ footer{background:var(--navy);padding:3rem 7vw;display:flex;justify-content:spac
   .ficon{width:40px;height:40px;font-size:1.1rem;border-radius:10px}
   #feat-inner-wrap{padding:0 5vw}
 
-  /* Filter stage */
-  .fstage-phase{flex-direction:column;gap:1rem;padding:0 5vw;align-items:center}
+  /* Filter stage — stack all three phases, hide heavy 3D */
+  #po-fstage{height:auto!important}
+  #sc-fstage{min-height:auto!important;position:relative!important}
+  .fstage-phase{position:relative!important;inset:auto!important;opacity:1!important;transform:none!important;flex-direction:column;gap:.6rem;padding:2rem 5vw 1.5rem;align-items:flex-start;border-bottom:1px solid rgba(11,37,88,.06)}
+  #fsp-pink,#fsp-green{opacity:1!important;transform:none!important}
+  .fsp-tag,.fsp-h,.fsp-pill{opacity:1!important;transform:none!important}
   .fstage-left,.fstage-right{width:100%;max-width:100%}
-  .fstage-left{order:2}
-  .fstage-right{order:1;height:180px;display:flex;align-items:center;justify-content:center;overflow:visible}
-  .fsp-filter-wrap{transform:scale(.58);transform-origin:center center}
+  .fstage-right{display:none!important}
   .fsp-h{font-size:clamp(1.5rem,6.5vw,2.4rem)}
-  .fsp-pills{gap:.4rem}
+  .fsp-pills{gap:.4rem;margin-top:.8rem}
   .fsp-pill{font-size:.75rem;padding:.5rem .85rem}
 
   /* Split */
@@ -869,6 +871,12 @@ footer{background:var(--navy);padding:3rem 7vw;display:flex;justify-content:spac
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
 gsap.registerPlugin(ScrollTrigger);
+const isMobile=window.innerWidth<=760;
+let userHasScrolled=false;
+function _onFirstInteract(){userHasScrolled=true;document.removeEventListener('touchstart',_onFirstInteract,true);document.removeEventListener('wheel',_onFirstInteract,true);}
+document.addEventListener('touchstart',_onFirstInteract,{passive:true,capture:true});
+document.addEventListener('wheel',_onFirstInteract,{passive:true,capture:true});
+if(isMobile)ScrollTrigger.config({ignoreMobileResize:true});
 
 /* ════════════════════════════════════
    WIND-CLOUD SHAPE — replace all .kcloud SVGs
@@ -889,7 +897,7 @@ window.addEventListener('scroll',()=>{
 /* ════════════════════════════════════
    §0 LOGO INTRO — auto-play on swipe
 ════════════════════════════════════ */
-document.getElementById('po-intro').style.height=(innerHeight+320)+'px';
+if(!isMobile)document.getElementById('po-intro').style.height=(innerHeight+320)+'px';
 const introTL=gsap.timeline({paused:true});
 introTL
   .to('#intro-tag',   {opacity:1,duration:.35,ease:'power2.out'})
@@ -898,14 +906,23 @@ introTL
   .to('#intro-logo',{scale:5,opacity:0,filter:'blur(22px) brightness(1.8)',duration:1.1,ease:'power1.inOut'},'+=.1')
   .to('#intro-tag',{opacity:0,duration:.25},'-=.75')
   .to('#sc-intro',{backgroundColor:'#ffffff',duration:.3},'-=.4');
-ScrollTrigger.create({
-  trigger:'#po-intro',start:'top top',end:'bottom bottom',pin:'#sc-intro',
-  onEnter:()=>introTL.restart(),
-  onLeaveBack:()=>{introTL.progress(0);introTL.pause();}
-});
+if(isMobile){
+  /* On mobile: play intro on the very first touch */
+  document.addEventListener('touchstart',function _introPlay(){
+    userHasScrolled=true;
+    introTL.play();
+    document.removeEventListener('touchstart',_introPlay,true);
+  },{passive:true,capture:true,once:true});
+}else{
+  ScrollTrigger.create({
+    trigger:'#po-intro',start:'top top',end:'bottom bottom',pin:'#sc-intro',
+    onEnter:()=>{if(!userHasScrolled)return;introTL.restart();},
+    onLeaveBack:()=>{introTL.progress(0);introTL.pause();}
+  });
+}
 
 /* Float clouds in intro */
-document.querySelectorAll('#sc-intro .kcloud').forEach((el,i)=>{
+if(!isMobile)document.querySelectorAll('#sc-intro .kcloud').forEach((el,i)=>{
   gsap.to(el,{y:'-=16',rotation:i%2?1.5:-1.5,duration:3.5+i*.5,repeat:-1,yoyo:true,ease:'sine.inOut',delay:i*.5});
 });
 
@@ -932,7 +949,7 @@ gsap.to('#hint', {opacity:0,ease:'none',scrollTrigger:{trigger:'#hero',start:'5%
    COLOR SECTION HELPER — auto-play on swipe
 ════════════════════════════════════ */
 function buildColorPin(outerID,sceneID,tags,imgID,chips,bigNum){
-  document.getElementById(outerID).style.height=(innerHeight+380)+'px';
+  if(!isMobile)document.getElementById(outerID).style.height=(innerHeight+380)+'px';
   const tl=gsap.timeline({paused:true});
   tl.to('#'+tags[0],{opacity:1,y:0,duration:.38,ease:'power2.out'})
     .to('#'+tags[1],{opacity:1,y:0,duration:.55,ease:'power2.out'},'-=.18')
@@ -943,23 +960,28 @@ function buildColorPin(outerID,sceneID,tags,imgID,chips,bigNum){
     .to('#'+imgID,{y:-12,duration:.5},'+=.15')
     .to('#'+imgID,{y:6, duration:.38},'-=.08')
     .to('#'+imgID,{y:0, duration:.3});
-  ScrollTrigger.create({
-    trigger:'#'+outerID,start:'top top',end:'bottom bottom',pin:'#'+sceneID,
-    onEnter:()=>tl.restart(),
-    onLeaveBack:()=>{tl.progress(0);tl.pause();}
-  });
+  if(isMobile){
+    ScrollTrigger.create({trigger:'#'+sceneID,start:'top 75%',
+      onEnter:()=>{if(!userHasScrolled)return;tl.play();}});
+  }else{
+    ScrollTrigger.create({
+      trigger:'#'+outerID,start:'top top',end:'bottom bottom',pin:'#'+sceneID,
+      onEnter:()=>{if(!userHasScrolled)return;tl.restart();},
+      onLeaveBack:()=>{tl.progress(0);tl.pause();}
+    });
+  }
 }
 buildColorPin('po-blue','sc-blue',['bt1','bt2','bt3'],'prod-blue',['bc1','bc2','bc3'],'bn-blue');
 buildColorPin('po-pink','sc-pink',['pt1','pt2','pt3'],'prod-pink',['pc1','pc2','pc3'],'bn-pink');
 buildColorPin('po-green','sc-green',['gt1','gt2','gt3'],'prod-green',['gc1','gc2','gc3'],'bn-green');
 
 /* Float clouds in color sections */
-document.querySelectorAll('.pin-scene .kcloud').forEach((el,i)=>{
+if(!isMobile)document.querySelectorAll('.pin-scene .kcloud').forEach((el,i)=>{
   gsap.to(el,{y:'+=20',rotation:i%2?2.5:-2.5,duration:4+i*.4,repeat:-1,yoyo:true,ease:'sine.inOut',delay:i*.55});
 });
 
 /* ── §5 COMBO — auto-play on swipe ── */
-document.getElementById('po-combo').style.height=(innerHeight+380)+'px';
+if(!isMobile)document.getElementById('po-combo').style.height=(innerHeight+380)+'px';
 const comboTL=gsap.timeline({paused:true});
 comboTL
   .to('#dkt',{opacity:1,y:0,duration:.35,ease:'power2.out'})
@@ -972,14 +994,19 @@ comboTL
   .to('#combo-img',{rotate:3,duration:.5},'+=.15')
   .to('#combo-img',{rotate:-2,duration:.38})
   .to('#combo-img',{rotate:0,duration:.3});
-ScrollTrigger.create({
-  trigger:'#po-combo',start:'top top',end:'bottom bottom',pin:'#sc-combo',
-  onEnter:()=>comboTL.restart(),
-  onLeaveBack:()=>{comboTL.progress(0);comboTL.pause();}
-});
+if(isMobile){
+  ScrollTrigger.create({trigger:'#sc-combo',start:'top 75%',
+    onEnter:()=>{if(!userHasScrolled)return;comboTL.play();}});
+}else{
+  ScrollTrigger.create({
+    trigger:'#po-combo',start:'top top',end:'bottom bottom',pin:'#sc-combo',
+    onEnter:()=>{if(!userHasScrolled)return;comboTL.restart();},
+    onLeaveBack:()=>{comboTL.progress(0);comboTL.pause();}
+  });
+}
 
 /* ── §6 FEATURES — auto-play on swipe ── */
-document.getElementById('po-feat').style.height=(innerHeight+380)+'px';
+if(!isMobile)document.getElementById('po-feat').style.height=(innerHeight+380)+'px';
 const featTL=gsap.timeline({paused:true});
 featTL
   .to('#ftag',{opacity:1,y:0,duration:.35,ease:'power2.out'})
@@ -989,11 +1016,16 @@ featTL
   .to('#fc3',{opacity:1,y:0,scale:1,duration:.58,ease:'back.out(1.4)'},'-=.18')
   .to('#fc4',{opacity:1,y:0,scale:1,duration:.58,ease:'back.out(1.4)'},'-=.18')
   .to(['#fc1','#fc2','#fc3','#fc4'],{y:-10,duration:.42,stagger:.07},'+=.15');
-ScrollTrigger.create({
-  trigger:'#po-feat',start:'top top',end:'bottom bottom',pin:'#sc-feat',
-  onEnter:()=>featTL.restart(),
-  onLeaveBack:()=>{featTL.progress(0);featTL.pause();}
-});
+if(isMobile){
+  ScrollTrigger.create({trigger:'#sc-feat',start:'top 75%',
+    onEnter:()=>{if(!userHasScrolled)return;featTL.play();}});
+}else{
+  ScrollTrigger.create({
+    trigger:'#po-feat',start:'top top',end:'bottom bottom',pin:'#sc-feat',
+    onEnter:()=>{if(!userHasScrolled)return;featTL.restart();},
+    onLeaveBack:()=>{featTL.progress(0);featTL.pause();}
+  });
+}
 
 
 /* ════════════════════════════════════
@@ -1001,9 +1033,9 @@ ScrollTrigger.create({
    Each filter rotates as you scroll,
    info pills reveal per color
 ════════════════════════════════════ */
-document.getElementById('po-fstage').style.height=(innerHeight+520)+'px';
+if(!isMobile)document.getElementById('po-fstage').style.height=(innerHeight+520)+'px';
 /* ── BUILD CSS 3D CYLINDERS (real geometry) ── */
-(function(){
+if(!isMobile)(function(){
   /* Filter proportions from product: chunky, ~2.8:1 H:D ratio */
   var N=28,         /* faces — enough for smooth silhouette */
       R=68,         /* radius px → diameter 136px */
@@ -1138,14 +1170,19 @@ document.getElementById('po-fstage').style.height=(innerHeight+520)+'px';
 })();
 
 /* initial states */
-gsap.set(['#fsp-pink','#fsp-green'],{opacity:0,y:22});
+if(!isMobile)gsap.set(['#fsp-pink','#fsp-green'],{opacity:0,y:22});
 
 const fsTagTL=gsap.timeline({paused:true});
-ScrollTrigger.create({
-  trigger:'#po-fstage',start:'top top',end:'bottom bottom',pin:'#sc-fstage',
-  onEnter:()=>fsTagTL.restart(),
-  onLeaveBack:()=>{fsTagTL.progress(0);fsTagTL.pause();}
-});
+if(isMobile){
+  ScrollTrigger.create({trigger:'#sc-fstage',start:'top 75%',
+    onEnter:()=>{if(!userHasScrolled)return;fsTagTL.play();}});
+}else{
+  ScrollTrigger.create({
+    trigger:'#po-fstage',start:'top top',end:'bottom bottom',pin:'#sc-fstage',
+    onEnter:()=>{if(!userHasScrolled)return;fsTagTL.restart();},
+    onLeaveBack:()=>{fsTagTL.progress(0);fsTagTL.pause();}
+  });
+}
 
 /* — BLUE — */
 fsTagTL
@@ -1204,15 +1241,20 @@ gsap.to('#shop-hd',{opacity:1,y:0,duration:.9,ease:'power3.out',scrollTrigger:{t
 ['#sc-card-blue','#sc-card-pink','#sc-card-green'].forEach((id,i)=>gsap.to(id,{opacity:1,y:0,scale:1,duration:.85,delay:i*.15,ease:'power3.out',scrollTrigger:{trigger:'.shop-grid',start:'top 82%',toggleActions:'play none none none'}}));
 
 /* ── Manifesto — auto-play on swipe ── */
-document.getElementById('po-mani').style.height=(innerHeight+380)+'px';
+if(!isMobile)document.getElementById('po-mani').style.height=(innerHeight+380)+'px';
 const maniTL=gsap.timeline({paused:true});
 ['#ml0','#ml1','#ml2','#ml3','#ml4','#ml5'].forEach((id,i)=>maniTL.to(id,{y:0,rotate:0,duration:.42,ease:'power2.out'},(i===0?0:'-=.08')));
-ScrollTrigger.create({
-  trigger:'#po-mani',start:'top top',end:'bottom bottom',pin:'#sc-mani',
-  onEnter:()=>maniTL.restart(),
-  onLeaveBack:()=>{maniTL.progress(0);maniTL.pause();}
-});
-document.querySelectorAll('#sc-mani .kcloud').forEach((el,i)=>{
+if(isMobile){
+  ScrollTrigger.create({trigger:'#sc-mani',start:'top 75%',
+    onEnter:()=>{if(!userHasScrolled)return;maniTL.play();}});
+}else{
+  ScrollTrigger.create({
+    trigger:'#po-mani',start:'top top',end:'bottom bottom',pin:'#sc-mani',
+    onEnter:()=>{if(!userHasScrolled)return;maniTL.restart();},
+    onLeaveBack:()=>{maniTL.progress(0);maniTL.pause();}
+  });
+}
+if(!isMobile)document.querySelectorAll('#sc-mani .kcloud').forEach((el,i)=>{
   gsap.to(el,{y:'+=18',duration:4+i,repeat:-1,yoyo:true,ease:'sine.inOut',delay:i*.7});
   gsap.to(el,{y:i%2?-60:50,ease:'none',scrollTrigger:{trigger:'#po-mani',start:'top bottom',end:'bottom top',scrub:true}});
 });
@@ -1227,7 +1269,7 @@ gsap.to('#cta-btn',{opacity:1,y:0,duration:.75,delay:.45,scrollTrigger:{trigger:
    Each non-pinned section rolls in from above
    via scrub-linked rotateX + scale
 ════════════════════════════════════ */
-['#split','#filters-showcase','#shop','#cta'].forEach(function(sel){
+if(!isMobile)['#split','#filters-showcase','#shop','#cta'].forEach(function(sel){
   gsap.fromTo(sel,
     {rotateX:16,scale:0.93,transformOrigin:'top center',transformPerspective:1200},
     {rotateX:0,scale:1,transformOrigin:'top center',transformPerspective:1200,ease:'none',
@@ -1236,19 +1278,21 @@ gsap.to('#cta-btn',{opacity:1,y:0,duration:.75,delay:.45,scrollTrigger:{trigger:
 });
 
 /* Float + parallax for scattered clouds */
-document.querySelectorAll('#split .kcloud, #filters-showcase .kcloud, #shop .kcloud, #cta .kcloud').forEach((el,i)=>{
+if(!isMobile)document.querySelectorAll('#split .kcloud, #filters-showcase .kcloud, #shop .kcloud, #cta .kcloud').forEach((el,i)=>{
   gsap.to(el,{y:'+=16',rotation:i%2?2:-2,duration:3.8+i*.4,repeat:-1,yoyo:true,ease:'sine.inOut',delay:i*.5});
   gsap.to(el,{y:-65,ease:'none',scrollTrigger:{trigger:el.closest('section')||el.parentElement,start:'top bottom',end:'bottom top',scrub:true}});
 });
 
 /* ── resize ── */
 window.addEventListener('resize',()=>{
-  document.getElementById('po-intro').style.height=(innerHeight+320)+'px';
-  ['po-blue','po-pink','po-green'].forEach(id=>document.getElementById(id).style.height=(innerHeight+380)+'px');
-  document.getElementById('po-combo').style.height=(innerHeight+380)+'px';
-  document.getElementById('po-feat').style.height=(innerHeight+380)+'px';
-  document.getElementById('po-fstage').style.height=(innerHeight+520)+'px';
-  document.getElementById('po-mani').style.height=(innerHeight+380)+'px';
+  if(window.innerWidth>760){
+    document.getElementById('po-intro').style.height=(innerHeight+320)+'px';
+    ['po-blue','po-pink','po-green'].forEach(id=>document.getElementById(id).style.height=(innerHeight+380)+'px');
+    document.getElementById('po-combo').style.height=(innerHeight+380)+'px';
+    document.getElementById('po-feat').style.height=(innerHeight+380)+'px';
+    document.getElementById('po-fstage').style.height=(innerHeight+520)+'px';
+    document.getElementById('po-mani').style.height=(innerHeight+380)+'px';
+  }
   ScrollTrigger.refresh();
 });
 
