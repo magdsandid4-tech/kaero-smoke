@@ -425,6 +425,28 @@ footer{background:var(--navy);padding:3rem 7vw;display:flex;justify-content:spac
   .mline{font-size:clamp(1.5rem,7.5vw,2.6rem)}
   .pk{width:clamp(110px,44vw,170px)}
 }
+
+/* ══ MOBILE: alle opacity:0/transform-Anfangszustände sofort sichtbar ══
+   Verhindert unsichtbare Elemente falls GSAP-Triggers nicht feuern       */
+@media(max-width:760px){
+  .eyebrow,.wi,.hero-sub,.hbtns,#hprod,.hpill,#hint,
+  .sec-tag,.sec-h,.sec-p,.chip,.big-num,.color-prod,
+  .dk-tag,.dk-h,.dk-p,.flist li,#combo-img,.cbadge,
+  .fcard,.fsp-tag,.fsp-h,.fsp-pill,.fsp-filter-3d,
+  #split-img-wrap,#split-txt,.step,.sbdg,
+  #fs-hd,#fs-main-img,.fsc,
+  .shop-hd,.shop-card,
+  .mline,
+  #cta-hd,.pk,#cta-btn{
+    opacity:1!important;
+    transform:none!important;
+  }
+  /* Intro-Schirm auf Mobile kleiner + Logo sofort sichtbar */
+  #intro-logo{opacity:1!important;filter:none!important}
+  #intro-tag{opacity:1!important}
+  /* Hero parallax deaktivieren auf mobile */
+  #hprod{transform:none!important}
+}
 </style>
 </head>
 <body>
@@ -438,7 +460,7 @@ footer{background:var(--navy);padding:3rem 7vw;display:flex;justify-content:spac
   <div id="cart-items-wrap"><div id="cart-empty"><div class="ce-icon">🛒</div><p>Noch nichts drin</p></div><div id="cart-items"></div></div>
   <div id="cart-footer">
     <div id="cart-total-row"><span>Gesamt</span><span id="cart-total">0,00 €</span></div>
-    <a href="https://kaerosmoke.com" id="cart-checkout">Zur Kasse →</a>
+    <a href="https://kaerosmoke.com/cart" id="cart-checkout" target="_blank">Zur Kasse →</a>
     <button id="cart-continue" onclick="Cart.close()">Weiter einkaufen</button>
   </div>
 </div>
@@ -499,16 +521,16 @@ footer{background:var(--navy);padding:3rem 7vw;display:flex;justify-content:spac
 
     <div id="hero-grid">
       <div id="hero-left">
-        <div class="eyebrow" id="ey">✦ Kokosschalen-Aktivkohle</div>
+        <div class="eyebrow" id="ey">✦ Premium Aktivkohle Filter</div>
         <h1>
-          <span class="ww"><span class="wi" id="w1">Entdecke</span></span>
-          <span class="ww"><span class="wi" id="w2">unsere</span></span><br>
-          <span class="ww"><span class="wi ac" id="w3">Kollektion.</span></span>
+          <span class="ww"><span class="wi" id="w1">Filter.</span></span>
+          <span class="ww"><span class="wi" id="w2">Spür</span></span><br>
+          <span class="ww"><span class="wi ac" id="w3">den Unterschied.</span></span>
         </h1>
-        <p class="hero-sub" id="hsub">Dreifach aktivierte Kokosschalen-Kohle. Drei Farben, drei Durchmesser — präzise gefertigt für echten Geschmack.</p>
+        <p class="hero-sub" id="hsub">100% Kokosschalen-Aktivkohle. Drei Farben, drei Größen — made for real taste.</p>
         <div class="hbtns" id="hbtns">
-          <a href="#shop" class="bs">Jetzt bestellen</a>
-          <a href="#po-blue" class="bt">Alle Filter</a>
+          <a href="#shop" class="bs">Jetzt kaufen</a>
+          <a href="#po-blue" class="bt">Kollektion entdecken</a>
         </div>
       </div>
       <div id="hero-right">
@@ -929,17 +951,17 @@ if(!isMobile)document.querySelectorAll('#sc-intro .kcloud').forEach((el,i)=>{
 /* ════════════════════════════════════
    §1 HERO entrance
 ════════════════════════════════════ */
-const htl=gsap.timeline({delay:.35});
+const htl=gsap.timeline({delay:.15});
 htl
-  .to('#ey',   {opacity:1,y:0,duration:.7,ease:'power3.out'})
-  .to(['#w1','#w2','#w3'],{y:0,duration:.9,stagger:.1,ease:'power4.out'},'-=.3')
-  .to('#hsub', {opacity:1,y:0,duration:.75,ease:'power2.out'},'-=.4')
-  .to('#hbtns',{opacity:1,y:0,duration:.65,ease:'power2.out'},'-=.5')
-  .to('#hprod',{opacity:1,y:0,scale:1,rotate:0,duration:1.15,ease:'power3.out'},'-=.8')
-  .to('#pp1',  {opacity:1,duration:.5,ease:'back.out(1.6)'},'-=.35')
-  .to('#pp2',  {opacity:1,duration:.5,ease:'back.out(1.6)'},'-=.22')
-  .to('#pp3',  {opacity:1,duration:.5,ease:'back.out(1.6)'},'-=.22')
-  .to('#hint', {opacity:1,duration:.7},'+=.25');
+  .to('#ey',   {opacity:1,y:0,duration:.4,ease:'power3.out'})
+  .to(['#w1','#w2','#w3'],{y:0,duration:.5,stagger:.06,ease:'power4.out'},'-=.2')
+  .to('#hsub', {opacity:1,y:0,duration:.4,ease:'power2.out'},'-=.25')
+  .to('#hbtns',{opacity:1,y:0,duration:.35,ease:'power2.out'},'-=.3')
+  .to('#hprod',{opacity:1,y:0,scale:1,rotate:0,duration:.65,ease:'power3.out'},'-=.5')
+  .to('#pp1',  {opacity:1,duration:.3,ease:'back.out(1.6)'},'-=.2')
+  .to('#pp2',  {opacity:1,duration:.3,ease:'back.out(1.6)'},'-=.12')
+  .to('#pp3',  {opacity:1,duration:.3,ease:'back.out(1.6)'},'-=.12')
+  .to('#hint', {opacity:1,duration:.4},'+=.1');
 
 /* Hero: subtle product parallax + hint fade */
 gsap.to('#hprod',{y:-60,rotate:-3,ease:'none',scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:1.2}});
@@ -951,15 +973,15 @@ gsap.to('#hint', {opacity:0,ease:'none',scrollTrigger:{trigger:'#hero',start:'5%
 function buildColorPin(outerID,sceneID,tags,imgID,chips,bigNum){
   if(!isMobile)document.getElementById(outerID).style.height=(innerHeight+380)+'px';
   const tl=gsap.timeline({paused:true});
-  tl.to('#'+tags[0],{opacity:1,y:0,duration:.38,ease:'power2.out'})
-    .to('#'+tags[1],{opacity:1,y:0,duration:.55,ease:'power2.out'},'-=.18')
-    .to('#'+tags[2],{opacity:1,y:0,duration:.45,ease:'power2.out'},'-=.28')
-    .to('#'+bigNum, {opacity:1,duration:.45},'-=.35')
-    .to('#'+imgID,  {opacity:1,x:0,rotate:0,scale:1,duration:.85,ease:'power2.out'},'-=.18')
-    .to(chips.map(c=>'#'+c),{opacity:1,y:0,duration:.38,stagger:.11},'+=.08')
-    .to('#'+imgID,{y:-12,duration:.5},'+=.15')
-    .to('#'+imgID,{y:6, duration:.38},'-=.08')
-    .to('#'+imgID,{y:0, duration:.3});
+  tl.to('#'+tags[0],{opacity:1,y:0,duration:.22,ease:'power2.out'})
+    .to('#'+tags[1],{opacity:1,y:0,duration:.32,ease:'power2.out'},'-=.1')
+    .to('#'+tags[2],{opacity:1,y:0,duration:.26,ease:'power2.out'},'-=.16')
+    .to('#'+bigNum, {opacity:1,duration:.26},'-=.2')
+    .to('#'+imgID,  {opacity:1,x:0,rotate:0,scale:1,duration:.48,ease:'power2.out'},'-=.1')
+    .to(chips.map(c=>'#'+c),{opacity:1,y:0,duration:.22,stagger:.07},'+=.05')
+    .to('#'+imgID,{y:-10,duration:.3},'+=.08')
+    .to('#'+imgID,{y:5, duration:.22},'-=.05')
+    .to('#'+imgID,{y:0, duration:.18});
   if(isMobile){
     ScrollTrigger.create({trigger:'#'+sceneID,start:'top 75%',
       onEnter:()=>{if(!userHasScrolled)return;tl.play();}});
@@ -984,16 +1006,16 @@ if(!isMobile)document.querySelectorAll('.pin-scene .kcloud').forEach((el,i)=>{
 if(!isMobile)document.getElementById('po-combo').style.height=(innerHeight+380)+'px';
 const comboTL=gsap.timeline({paused:true});
 comboTL
-  .to('#dkt',{opacity:1,y:0,duration:.35,ease:'power2.out'})
-  .to('#dkh',{opacity:1,y:0,duration:.55,ease:'power2.out'},'-=.18')
-  .to('#dkp',{opacity:1,y:0,duration:.45,ease:'power2.out'},'-=.28')
-  .to('#combo-img',{opacity:1,x:0,scale:1,duration:.9,ease:'power2.out'},'-=.18')
-  .to(['#fl1','#fl2','#fl3','#fl4'],{opacity:1,x:0,duration:.38,stagger:.11},'+=.08')
-  .to('#cba',{opacity:1,scale:1,y:0,duration:.42,ease:'back.out(1.6)'},'+=.08')
-  .to('#cbb',{opacity:1,scale:1,y:0,duration:.42,ease:'back.out(1.6)'},'-=.22')
-  .to('#combo-img',{rotate:3,duration:.5},'+=.15')
-  .to('#combo-img',{rotate:-2,duration:.38})
-  .to('#combo-img',{rotate:0,duration:.3});
+  .to('#dkt',{opacity:1,y:0,duration:.2,ease:'power2.out'})
+  .to('#dkh',{opacity:1,y:0,duration:.32,ease:'power2.out'},'-=.1')
+  .to('#dkp',{opacity:1,y:0,duration:.26,ease:'power2.out'},'-=.16')
+  .to('#combo-img',{opacity:1,x:0,scale:1,duration:.5,ease:'power2.out'},'-=.1')
+  .to(['#fl1','#fl2','#fl3','#fl4'],{opacity:1,x:0,duration:.22,stagger:.07},'+=.05')
+  .to('#cba',{opacity:1,scale:1,y:0,duration:.25,ease:'back.out(1.6)'},'+=.05')
+  .to('#cbb',{opacity:1,scale:1,y:0,duration:.25,ease:'back.out(1.6)'},'-=.12')
+  .to('#combo-img',{rotate:3,duration:.28},'+=.08')
+  .to('#combo-img',{rotate:-2,duration:.22})
+  .to('#combo-img',{rotate:0,duration:.18});
 if(isMobile){
   ScrollTrigger.create({trigger:'#sc-combo',start:'top 75%',
     onEnter:()=>{if(!userHasScrolled)return;comboTL.play();}});
@@ -1009,13 +1031,13 @@ if(isMobile){
 if(!isMobile)document.getElementById('po-feat').style.height=(innerHeight+380)+'px';
 const featTL=gsap.timeline({paused:true});
 featTL
-  .to('#ftag',{opacity:1,y:0,duration:.35,ease:'power2.out'})
-  .to('#fttl',{opacity:1,y:0,duration:.55,ease:'power2.out'},'-=.18')
-  .to('#fc1',{opacity:1,y:0,scale:1,duration:.58,ease:'back.out(1.4)'},'+=.08')
-  .to('#fc2',{opacity:1,y:0,scale:1,duration:.58,ease:'back.out(1.4)'},'-=.18')
-  .to('#fc3',{opacity:1,y:0,scale:1,duration:.58,ease:'back.out(1.4)'},'-=.18')
-  .to('#fc4',{opacity:1,y:0,scale:1,duration:.58,ease:'back.out(1.4)'},'-=.18')
-  .to(['#fc1','#fc2','#fc3','#fc4'],{y:-10,duration:.42,stagger:.07},'+=.15');
+  .to('#ftag',{opacity:1,y:0,duration:.2,ease:'power2.out'})
+  .to('#fttl',{opacity:1,y:0,duration:.32,ease:'power2.out'},'-=.1')
+  .to('#fc1',{opacity:1,y:0,scale:1,duration:.32,ease:'back.out(1.4)'},'+=.05')
+  .to('#fc2',{opacity:1,y:0,scale:1,duration:.32,ease:'back.out(1.4)'},'-=.1')
+  .to('#fc3',{opacity:1,y:0,scale:1,duration:.32,ease:'back.out(1.4)'},'-=.1')
+  .to('#fc4',{opacity:1,y:0,scale:1,duration:.32,ease:'back.out(1.4)'},'-=.1')
+  .to(['#fc1','#fc2','#fc3','#fc4'],{y:-10,duration:.25,stagger:.04},'+=.08');
 if(isMobile){
   ScrollTrigger.create({trigger:'#sc-feat',start:'top 75%',
     onEnter:()=>{if(!userHasScrolled)return;featTL.play();}});
@@ -1186,39 +1208,39 @@ if(isMobile){
 
 /* — BLUE — */
 fsTagTL
-  .to('#fspt-blue',{opacity:1,y:0,duration:.28})
-  .to('#fsph-blue',{opacity:1,y:0,duration:.42},'-=.15')
-  .fromTo('#fspf-blue',{rotateX:-28,rotateY:0,y:60,opacity:0},{rotateX:-28,rotateY:360,y:0,opacity:1,duration:1.6,ease:'none'},'-=.2')
-  .to('#fspp-b1',{opacity:1,x:0,duration:.26},'-=1.15')
-  .to('#fspp-b2',{opacity:1,x:0,duration:.26},'-=.88')
-  .to('#fspp-b3',{opacity:1,x:0,duration:.26},'-=.6')
-  .to('#fspp-b4',{opacity:1,x:0,duration:.26},'-=.32')
+  .to('#fspt-blue',{opacity:1,y:0,duration:.18})
+  .to('#fsph-blue',{opacity:1,y:0,duration:.26},'-=.1')
+  .fromTo('#fspf-blue',{rotateX:-28,rotateY:0,y:40,opacity:0},{rotateX:-28,rotateY:360,y:0,opacity:1,duration:.9,ease:'none'},'-=.12')
+  .to('#fspp-b1',{opacity:1,x:0,duration:.18},'-=.65')
+  .to('#fspp-b2',{opacity:1,x:0,duration:.18},'-=.48')
+  .to('#fspp-b3',{opacity:1,x:0,duration:.18},'-=.32')
+  .to('#fspp-b4',{opacity:1,x:0,duration:.18},'-=.16')
 
 /* Blue → Pink */
-  .to('#fsp-blue',{opacity:0,y:-45,duration:.38},'+=.18')
-  .fromTo('#fsp-pink',{y:22,opacity:0},{y:0,opacity:1,duration:.38},'-=.18')
+  .to('#fsp-blue',{opacity:0,y:-30,duration:.22},'+=.1')
+  .fromTo('#fsp-pink',{y:16,opacity:0},{y:0,opacity:1,duration:.22},'-=.12')
 
 /* — PINK — */
-  .to('#fspt-pink',{opacity:1,y:0,duration:.28})
-  .to('#fsph-pink',{opacity:1,y:0,duration:.42},'-=.15')
-  .fromTo('#fspf-pink',{rotateX:-28,rotateY:0,y:60,opacity:0},{rotateX:-28,rotateY:360,y:0,opacity:1,duration:1.6,ease:'none'},'-=.2')
-  .to('#fspp-p1',{opacity:1,x:0,duration:.26},'-=1.15')
-  .to('#fspp-p2',{opacity:1,x:0,duration:.26},'-=.88')
-  .to('#fspp-p3',{opacity:1,x:0,duration:.26},'-=.6')
-  .to('#fspp-p4',{opacity:1,x:0,duration:.26},'-=.32')
+  .to('#fspt-pink',{opacity:1,y:0,duration:.18})
+  .to('#fsph-pink',{opacity:1,y:0,duration:.26},'-=.1')
+  .fromTo('#fspf-pink',{rotateX:-28,rotateY:0,y:40,opacity:0},{rotateX:-28,rotateY:360,y:0,opacity:1,duration:.9,ease:'none'},'-=.12')
+  .to('#fspp-p1',{opacity:1,x:0,duration:.18},'-=.65')
+  .to('#fspp-p2',{opacity:1,x:0,duration:.18},'-=.48')
+  .to('#fspp-p3',{opacity:1,x:0,duration:.18},'-=.32')
+  .to('#fspp-p4',{opacity:1,x:0,duration:.18},'-=.16')
 
 /* Pink → Green */
-  .to('#fsp-pink',{opacity:0,y:-45,duration:.38},'+=.18')
-  .fromTo('#fsp-green',{y:22,opacity:0},{y:0,opacity:1,duration:.38},'-=.18')
+  .to('#fsp-pink',{opacity:0,y:-30,duration:.22},'+=.1')
+  .fromTo('#fsp-green',{y:16,opacity:0},{y:0,opacity:1,duration:.22},'-=.12')
 
 /* — GREEN — */
-  .to('#fspt-green',{opacity:1,y:0,duration:.28})
-  .to('#fsph-green',{opacity:1,y:0,duration:.42},'-=.15')
-  .fromTo('#fspf-green',{rotateX:-28,rotateY:0,y:60,opacity:0},{rotateX:-28,rotateY:360,y:0,opacity:1,duration:1.6,ease:'none'},'-=.2')
-  .to('#fspp-g1',{opacity:1,x:0,duration:.26},'-=1.15')
-  .to('#fspp-g2',{opacity:1,x:0,duration:.26},'-=.88')
-  .to('#fspp-g3',{opacity:1,x:0,duration:.26},'-=.6')
-  .to('#fspp-g4',{opacity:1,x:0,duration:.26},'-=.32');
+  .to('#fspt-green',{opacity:1,y:0,duration:.18})
+  .to('#fsph-green',{opacity:1,y:0,duration:.26},'-=.1')
+  .fromTo('#fspf-green',{rotateX:-28,rotateY:0,y:40,opacity:0},{rotateX:-28,rotateY:360,y:0,opacity:1,duration:.9,ease:'none'},'-=.12')
+  .to('#fspp-g1',{opacity:1,x:0,duration:.18},'-=.65')
+  .to('#fspp-g2',{opacity:1,x:0,duration:.18},'-=.48')
+  .to('#fspp-g3',{opacity:1,x:0,duration:.18},'-=.32')
+  .to('#fspp-g4',{opacity:1,x:0,duration:.18},'-=.16');
 
 /* ── §7 SPLIT ── */
 gsap.fromTo('#split-img',{y:90},{y:-90,ease:'none',scrollTrigger:{trigger:'#split',start:'top bottom',end:'bottom top',scrub:1.6}});
@@ -1243,7 +1265,7 @@ gsap.to('#shop-hd',{opacity:1,y:0,duration:.9,ease:'power3.out',scrollTrigger:{t
 /* ── Manifesto — auto-play on swipe ── */
 if(!isMobile)document.getElementById('po-mani').style.height=(innerHeight+380)+'px';
 const maniTL=gsap.timeline({paused:true});
-['#ml0','#ml1','#ml2','#ml3','#ml4','#ml5'].forEach((id,i)=>maniTL.to(id,{y:0,rotate:0,duration:.42,ease:'power2.out'},(i===0?0:'-=.08')));
+['#ml0','#ml1','#ml2','#ml3','#ml4','#ml5'].forEach((id,i)=>maniTL.to(id,{y:0,rotate:0,duration:.24,ease:'power2.out'},(i===0?0:'-=.05')));
 if(isMobile){
   ScrollTrigger.create({trigger:'#sc-mani',start:'top 75%',
     onEnter:()=>{if(!userHasScrolled)return;maniTL.play();}});
